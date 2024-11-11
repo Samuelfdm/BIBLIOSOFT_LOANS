@@ -24,6 +24,10 @@ public class LoanHistory {
     @Column(name = "copy_state", nullable = false)
     private CopyState copyState;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "loan_id")
+    private Loan loan;
+
     public LoanHistory(LocalDate date, CopyState copyState) {
         this.date = date;
         this.copyState = copyState;

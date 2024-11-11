@@ -1,4 +1,4 @@
-package edu.eci.cvds.BiblioSoftLoans.exceptions;
+package edu.eci.cvds.BiblioSoftLoans.exception;
 
 public class LoanException extends RuntimeException {
     public LoanException(String message) {

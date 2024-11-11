@@ -45,4 +45,14 @@ public class Loan {
         this.returnDate = returnDate;
         this.loanState = loanState;
     }
+
+    public void addHistory(LoanHistory loanHistory) {
+        this.loanHistory.add(loanHistory);
+        loanHistory.setLoan(this);
+    }
+
+    public void removeHistory(LoanHistory loanHistory) {
+        this.loanHistory.remove(loanHistory);
+        loanHistory.setLoan(null);
+    }
 }
