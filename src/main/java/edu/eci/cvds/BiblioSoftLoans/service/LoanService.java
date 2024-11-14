@@ -163,4 +163,9 @@ public class LoanService implements ILoanService {
     }
 
 
+    public List<Loan> showLoan(){
+        return loanRepository.findAll();
+    }
+
+
 }
