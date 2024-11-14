@@ -42,31 +42,46 @@ public class LoanService implements ILoanService {
         if (student == null) {
             throw new StudentException(StudentException.ErrorType.STUDENT_NOT_FOUND);
         }
-        // Verificar que no tenga un prestamo activo del LIBRO solicitado.
-        // Si el estudiante ya tiene un prestamo activo del LIBRO solicitado, NO le puedo dar otra COPIA.
-        if (!checkStudentHasBook(loanRequest.getStudientId, loanRequest.getBookCode)) {
+
+        // Verificar que el estudiante no tenga un préstamo activo del libro solicitado
+        if (!checkStudentHasBook(loanRequest.getStudentId(), loanRequest.getCopyId())) {
             throw new BookLoanException(BookLoanException.ErrorType.ALREADY_BORROWED);
         }
 
-        // Verificar que el ejemplar está disponible, es decir, si aun hay copias para prestar o ya se acabaron.
+        // Verificar que el ejemplar está disponible
         CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
         if (copy == null || !"AVAILABLE".equals(copy.getDisponibility())) {
             throw new BookLoanException(BookLoanException.ErrorType.STUDENT_ALREADY_HAS_BOOK);
         }
 
-        Loan loan = new Loan(loanRequest.getStudentId(),loanRequest.getCopyId(),LocalDate.now(),generateReturnDate(bookServiceClient.getBookCopyById(loanRequest.getBookCode())),LoanState.Loaned);
+        // Crear el préstamo con la fecha de devolución generada
+        LocalDate returnDate = generateReturnDate(copy);
+        Loan loan = new Loan(
+                loanRequest.getStudentId(),
+                loanRequest.getCopyId(),
+                LocalDate.now(),
+                returnDate,
+                LoanState.Loaned
+        );
 
-        CopyState initialCopyState = CopyState.valueOf(copy.getState()); //ESTO PUEDE FALLAR PORQUE EL MODULO DE LIBROS TIENE NOMBRES DIFERENTES
-        updateHistory(initialCopyState);
-
+        // Guardar el préstamo en la base de datos
         loanRepository.save(loan);
 
-        // Cambiar la disponibilidad del ejemplar en el modulo de libros a "Loaned" mediante el cliente del servicio de libros
-        //El modulo de libros maneja una enumeracion con: AVAILABLE y BORROWED deberia ser LOANED
+        // Cambiar la disponibilidad del ejemplar en el módulo de libros a "BORROWED"
         bookServiceClient.updateCopyDisponibility(loanRequest.getCopyId(), LoanState.Loaned);
 
-        return new LoanResponseDTO(loan.getId(), loan.getCopyId(), loan.getStudentId(), loan.getLoanDate(), loan.getReturnDate(), loan.getLoanState(), loan.getLoanHistory());
+        // Retornar la respuesta del préstamo
+        return new LoanResponseDTO(
+                loan.getId(),
+                loan.getCopyId(),
+                loan.getStudentId(),
+                loan.getLoanDate(),
+                loan.getReturnDate(),
+                loan.getLoanState(),
+                loan.getLoanHistory()
+        );
     }
+
 
     /**
      * Checks if a student currently has a specific book loaned.
@@ -141,5 +156,11 @@ public class LoanService implements ILoanService {
 
         return loanDate.plusDays(daysToAdd);
     }
+
+    public String showAvailability(String id) {
+        CopyDTO copy = bookServiceClient.getBookCopyById(id).block();
+        return (copy != null) ? copy.getDisponibility() : "Unavailable";
+    }
+
 
 }

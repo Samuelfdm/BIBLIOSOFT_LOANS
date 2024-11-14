@@ -41,4 +41,9 @@ public class LoanController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/{id}")
+    public String showAvailability(@PathVariable String id){
+        return loanService.showAvailability(id);
+    }
 }

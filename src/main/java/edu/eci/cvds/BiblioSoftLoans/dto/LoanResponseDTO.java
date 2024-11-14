@@ -22,4 +22,14 @@ public class LoanResponseDTO {
     private LocalDate returnDate;
     private LoanState loanState;
     private List<LoanHistory> loanHistory;
+
+    public LoanResponseDTO(Long loanId, String copyId, Long studentId, LocalDate loanDate, LocalDate returnDate, LoanState loanState, List<LoanHistory> loanHistory) {
+        this.loanId = loanId;
+        this.copyId = copyId;
+        this.studentId = studentId;
+        this.loanDate = loanDate;
+        this.returnDate = returnDate;
+        this.loanState = loanState;
+        this.loanHistory = loanHistory;
+    }
 }

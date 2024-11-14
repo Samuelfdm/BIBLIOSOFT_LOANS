@@ -15,4 +15,22 @@ public class ReturnRequestDTO {
     private Long studentId; // ID del usuario que devuelve el libro
     private String copyId;  // ID de la copia o ejemplar que se presto
     private CopyState finalCopyState; // Estado final de la copia al ser devuelta
+
+    public ReturnRequestDTO(Long studentId, String copyId, CopyState finalCopyState) {
+        this.studentId = studentId;
+        this.copyId = copyId;
+        this.finalCopyState = finalCopyState;
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public String getCopyId() {
+        return copyId;
+    }
+
+    public CopyState getFinalCopyState() {
+        return finalCopyState;
+    }
 }
