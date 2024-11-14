@@ -46,6 +46,34 @@ public class Loan {
         this.loanState = loanState;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Long getStudentId() {
+        return studentId;
+    }
+
+    public String getCopyId() {
+        return copyId;
+    }
+
+    public LocalDate getLoanDate() {
+        return loanDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public LoanState getLoanState() {
+        return loanState;
+    }
+
+    public List<LoanHistory> getLoanHistory() {
+        return loanHistory;
+    }
+
     public void addHistory(LoanHistory loanHistory) {
         this.loanHistory.add(loanHistory);
         loanHistory.setLoan(this);
