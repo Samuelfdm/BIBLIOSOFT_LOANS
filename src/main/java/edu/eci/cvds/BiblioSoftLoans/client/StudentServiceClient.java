@@ -17,6 +17,8 @@ public class StudentServiceClient {
                 .build();
     }
 
+    //NOS FALTA CORREGIR LAS URL DEL MODULO DE ESTUDIANTES, LOS ENDPOINTS...
+
     public Mono<StudentDTO> getStudentById(Long studentId) {
         return webClient.get()
                 .uri("/students/{studentId}", studentId)

@@ -1,6 +1,7 @@
 package edu.eci.cvds.BiblioSoftLoans.controller;
 
 import edu.eci.cvds.BiblioSoftLoans.dto.*;
+import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
 import edu.eci.cvds.BiblioSoftLoans.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,17 +32,13 @@ public class LoanController {
         return ResponseEntity.ok(response);
     }
 
-    // Endpoint para consultar el estado de una copia
-    @GetMapping("/copy/{copyId}")
-    public ResponseEntity<CopyDTO> getCopyStatus(@PathVariable String copyId) {
-        CopyDTO copy = loanService.getCopy(copyId);
-        return ResponseEntity.ok(copy);
-    }
-
-    // Endpoint para obtener los préstamos activos de un estudiante
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<LoanResponseDTO>> getActiveLoansByStudent(@PathVariable Long studentId) {
-        List<LoanResponseDTO> activeLoans = loanService.getActiveLoansByStudent(studentId);
-        return ResponseEntity.ok(activeLoans);
+    @GetMapping("/{loanId}/history")
+    public ResponseEntity<List<LoanHistory>> getLoanHistory(@PathVariable Long loanId) {
+        try {
+            List<LoanHistory> loanHistory = loanService.getLoanHistory(loanId);
+            return ResponseEntity.ok(loanHistory);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
