@@ -1,14 +1,12 @@
 package edu.eci.cvds.BiblioSoftLoans.dto;
 
 import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @Data
 public class ReturnRequestDTO {
     //Información para buscar el prestamo a devolver
@@ -20,17 +18,5 @@ public class ReturnRequestDTO {
         this.studentId = studentId;
         this.copyId = copyId;
         this.finalCopyState = finalCopyState;
-    }
-
-    public Long getStudentId() {
-        return studentId;
-    }
-
-    public String getCopyId() {
-        return copyId;
-    }
-
-    public CopyState getFinalCopyState() {
-        return finalCopyState;
     }
 }

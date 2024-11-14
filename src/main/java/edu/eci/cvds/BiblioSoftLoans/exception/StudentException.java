@@ -4,7 +4,7 @@ public class StudentException extends RuntimeException {
 
     private String userMessage;
     private String developerMessage;
-    private ErrorType errorType;
+    private final ErrorType errorType;
 
     public StudentException(ErrorType errorType) {
         super();

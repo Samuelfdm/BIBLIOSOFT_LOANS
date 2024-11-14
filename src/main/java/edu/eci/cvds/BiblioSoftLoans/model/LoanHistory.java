@@ -32,20 +32,4 @@ public class LoanHistory {
         this.date = date;
         this.copyState = copyState;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public void setCopyState(CopyState copyState) {
-        this.copyState = copyState;
-    }
-
-    public void setLoan(Loan loan) {
-        this.loan = loan;
-    }
 }

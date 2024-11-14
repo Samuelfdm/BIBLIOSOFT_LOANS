@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -24,6 +23,9 @@ public class Loan {
 
     @Column(name = "copy_id", nullable = false)
     private String copyId; // Código del ejemplar/copia (referencia externa)
+
+    @Column(name = "book_id", nullable = false)
+    private String bookId; // Código del libro (referencia externa)
 
     @Column(name = "loan_date", nullable = false)
     private LocalDate loanDate;
@@ -45,34 +47,6 @@ public class Loan {
         this.loanDate = loanDate;
         this.returnDate = returnDate;
         this.loanState = loanState;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getStudentId() {
-        return studentId;
-    }
-
-    public String getCopyId() {
-        return copyId;
-    }
-
-    public LocalDate getLoanDate() {
-        return loanDate;
-    }
-
-    public LocalDate getReturnDate() {
-        return returnDate;
-    }
-
-    public LoanState getLoanState() {
-        return loanState;
-    }
-
-    public List<LoanHistory> getLoanHistory() {
-        return loanHistory;
     }
 
     public void addHistory(LoanHistory loanHistory) {

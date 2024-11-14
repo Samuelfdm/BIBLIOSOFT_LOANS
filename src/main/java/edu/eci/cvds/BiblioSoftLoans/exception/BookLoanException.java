@@ -4,7 +4,7 @@ public class BookLoanException extends RuntimeException {
 
     private String userMessage;
     private String developerMessage;
-    private ErrorType errorType;
+    private final ErrorType errorType;
 
     public BookLoanException(ErrorType errorType) {
         super();
