@@ -24,6 +24,9 @@ public class Loan {
     @Column(name = "copy_id", nullable = false)
     private String copyId; // Código del ejemplar/copia (referencia externa)
 
+    @Column(name = "book_id", nullable = false)
+    private String bookId; // Código del libro (referencia externa)
+
     @Column(name = "loan_date", nullable = false)
     private LocalDate loanDate;
 

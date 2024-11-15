@@ -1,6 +1,7 @@
 package edu.eci.cvds.BiblioSoftLoans.controller;
 
 import edu.eci.cvds.BiblioSoftLoans.dto.*;
+import edu.eci.cvds.BiblioSoftLoans.model.Loan;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
 import edu.eci.cvds.BiblioSoftLoans.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,15 @@ public class LoanController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/{id}")
+    public String showAvailability(@PathVariable String id){
+        return loanService.showAvailability(id);
+    }
+
+    @GetMapping
+    public List<Loan> showLoan(){
+        return loanService.showLoan();
     }
 }
