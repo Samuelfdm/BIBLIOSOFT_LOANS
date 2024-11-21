@@ -1,9 +1,6 @@
-package edu.eci.cvds.BiblioSoftLoans.DTO;
-import edu.eci.cvds.BiblioSoftLoans.dto.StudentDTO;
-import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
+package edu.eci.cvds.BiblioSoftLoans.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import java.time.LocalDate;
 
 public class StudentDTOTest {
 
