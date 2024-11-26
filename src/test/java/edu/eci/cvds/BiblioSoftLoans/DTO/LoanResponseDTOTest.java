@@ -1,11 +1,7 @@
-package edu.eci.cvds.BiblioSoftLoans.DTO;
-import edu.eci.cvds.BiblioSoftLoans.dto.LoanResponseDTO;
-import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
+package edu.eci.cvds.BiblioSoftLoans.dto;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanState;
-import edu.eci.cvds.BiblioSoftLoans.dto.LoanResponseDTO;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;

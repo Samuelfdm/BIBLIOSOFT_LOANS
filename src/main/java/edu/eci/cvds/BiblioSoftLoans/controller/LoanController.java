@@ -33,19 +33,10 @@ public class LoanController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{loanId}/history")
-    public ResponseEntity<List<LoanHistory>> getLoanHistory(@PathVariable Long loanId) {
-        try {
-            List<LoanHistory> loanHistory = loanService.getLoanHistory(loanId);
-            return ResponseEntity.ok(loanHistory);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/{id}")
-    public String showAvailability(@PathVariable String id){
-        return loanService.showAvailability(id);
+    // Endpoint para obtener todos los prestamos activos
+    @GetMapping("/loansActive")
+    public List<Loan> loansActive() {
+        return loanService.loansActive();
     }
 
     @GetMapping

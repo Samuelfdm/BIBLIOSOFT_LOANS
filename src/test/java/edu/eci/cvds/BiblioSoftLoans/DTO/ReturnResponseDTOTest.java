@@ -1,5 +1,4 @@
-package edu.eci.cvds.BiblioSoftLoans.DTO;
-import edu.eci.cvds.BiblioSoftLoans.dto.ReturnResponseDTO;
+package edu.eci.cvds.BiblioSoftLoans.dto;
 import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

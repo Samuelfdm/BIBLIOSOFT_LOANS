@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-
 @Service
 public class LoanService implements ILoanService {
 
@@ -43,18 +42,20 @@ public class LoanService implements ILoanService {
             throw new StudentException(StudentException.ErrorType.STUDENT_NOT_FOUND);
         }
 
-        // Verificar que el estudiante no tenga un préstamo activo del libro solicitado
-        if (!checkStudentHasBook(loanRequest.getStudentId(), loanRequest.getCopyId())) {
+        // Obtenemos la información del ejemplar
+        CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
+
+        // Verificar que el estudiante no tenga un préstamo activo del libro asociado al ejemplar solicitado
+        if (copy == null || checkStudentHasBook(student.getId(), copy.getBookId())) {
             throw new BookLoanException(BookLoanException.ErrorType.ALREADY_BORROWED);
         }
 
-        // Verificar que el ejemplar está disponible
-        CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
-        if (copy == null || !"AVAILABLE".equals(copy.getDisponibility())) {
+        //Verificamos la disponibilidad del ejemplar
+        if (!"AVAILABLE".equals(copy.getDisponibility())) {
             throw new BookLoanException(BookLoanException.ErrorType.STUDENT_ALREADY_HAS_BOOK);
         }
 
-        // Crear el préstamo con la fecha de devolución generada
+        // Creamos el prestamo con toda su información
         LocalDate returnDate = generateReturnDate(copy);
         Loan loan = new Loan(
                 loanRequest.getStudentId(),
@@ -64,8 +65,14 @@ public class LoanService implements ILoanService {
                 LoanState.Loaned
         );
 
-        // Guardar el préstamo en la base de datos
+        // Actualizar la información del Historial del ejemplar en el prestamo
+        CopyState initialCopyState = CopyState.valueOf(copy.getState());
+        LoanHistory loanHistory = updateHistory(initialCopyState);
+        loan.addHistory(loanHistory);
+
+        // Guardar el préstamo y el historial en las bases de datos
         loanRepository.save(loan);
+        LoanHistoryRepository.save(loanHistory);
 
         // Cambiar la disponibilidad del ejemplar en el módulo de libros a "BORROWED"
         bookServiceClient.updateCopyDisponibility(loanRequest.getCopyId(), LoanState.Loaned);
@@ -82,7 +89,6 @@ public class LoanService implements ILoanService {
         );
     }
 
-
     /**
      * Checks if a student currently has a specific book loaned.
      *
@@ -91,43 +97,43 @@ public class LoanService implements ILoanService {
      * @return true if the student has the book, false otherwise.
      */
     public boolean checkStudentHasBook(Long studentId, String bookCode) {
-        List<Loan> loans = loanRepository.findByCopyIdAndStudentId(bookCode, studentId);
-        return loans.isEmpty();
+         return loanRepository.findByBookIdAndStudentIdAndLoanState(bookCode, studentId, LoanState.Loaned);
     }
 
     @Override
     @Transactional
     public ReturnResponseDTO returnBook(ReturnRequestDTO returnRequest) {
         // Lógica para encontrar el préstamo correspondiente para retornar
-        Long loanId = loanRepository.findIdByCopyIdAndStudentIdAndLoanState(returnRequest.getCopyId(), returnRequest.getStudentId(), LoanState.Loaned);
-        if (loanId == null) {
+        Loan loan = loanRepository.findByCopyIdAndStudentIdAndLoanState(returnRequest.getCopyId(), returnRequest.getStudentId(), LoanState.Loaned);
+        if (loan == null) {
             throw new BookLoanException(BookLoanException.ErrorType.NO_LOAN_FOUND);
         }
-        LocalDate returnDate = LocalDate.now();
+
         // Determinar el estado final de la copia
-        // Cuando devuelven un libro se supone que el administrador escribe en que estado llego
         CopyState finalCopyState = returnRequest.getFinalCopyState();
-        loanRepository.deleteById(loanId);
-        updateHistory(finalCopyState);
+        LoanHistory loanHistory = updateHistory(finalCopyState);
+        loan.addHistory(loanHistory);
 
         // Actualizar el préstamo en la base de datos, marcándolo como devuelto
-        // TOCA DECIDIR SI guardamos el prestamo como devuelto en la base o lo eliminamos por completo
-        //updateLoanAsReturned(loanId, returnDate, LoanState.Returned);
+        loan.setLoanState(LoanState.Returned);
+        loanRepository.save(loan);
+
+        // Cambiar la disponibilidad del ejemplar en el módulo de libros a "AVAILABLE"
+        bookServiceClient.updateCopyDisponibility(returnRequest.getCopyId(), LoanState.Returned);
 
         // Retornar el DTO con los detalles de la devolución
-        return new ReturnResponseDTO(loanId, returnDate, finalCopyState);
+        return new ReturnResponseDTO(loan.getId(), loanHistory.getDate(), finalCopyState);
     }
 
-    public void updateHistory(CopyState copyState){
+    @Override
+    public List<Loan> loansActive() {
+        return loanRepository.findByLoanState(LoanState.Loaned);
+    }
+
+    public LoanHistory updateHistory(CopyState copyState){
+        //Actualizamos fechas de prestamo o retorno y los estados en que llego el ejemplar
         LoanHistory history = new LoanHistory(LocalDate.now(),copyState);
-        LoanHistoryRepository.save(history);
-    }
-
-
-    public List<LoanHistory> getLoanHistory(Long loanId) {
-        Loan loan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new IllegalArgumentException("Loan not found with ID: " + loanId));
-        return loan.getLoanHistory();
+        return LoanHistoryRepository.save(history);
     }
 
     /**
@@ -157,15 +163,7 @@ public class LoanService implements ILoanService {
         return loanDate.plusDays(daysToAdd);
     }
 
-    public String showAvailability(String id) {
-        CopyDTO copy = bookServiceClient.getBookCopyById(id).block();
-        return (copy != null) ? copy.getDisponibility() : "Unavailable";
-    }
-
-
     public List<Loan> showLoan(){
         return loanRepository.findAll();
     }
-
-
 }
