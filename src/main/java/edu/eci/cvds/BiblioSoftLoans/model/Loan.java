@@ -41,9 +41,10 @@ public class Loan {
     @JoinColumn(name = "loan_id")
     private List<LoanHistory> loanHistory;
 
-    public Loan(Long studentId, String copyId, LocalDate loanDate, LocalDate returnDate, LoanState loanState) {
+    public Loan(Long studentId, String copyId, String bookId, LocalDate loanDate, LocalDate returnDate, LoanState loanState) {
         this.studentId = studentId;
         this.copyId = copyId;
+        this.bookId = bookId;
         this.loanDate = loanDate;
         this.returnDate = returnDate;
         this.loanState = loanState;

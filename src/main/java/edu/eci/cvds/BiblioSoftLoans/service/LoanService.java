@@ -60,6 +60,7 @@ public class LoanService implements ILoanService {
         Loan loan = new Loan(
                 loanRequest.getStudentId(),
                 loanRequest.getCopyId(),
+                copy.getBookId(),
                 LocalDate.now(),
                 returnDate,
                 LoanState.Loaned
@@ -81,6 +82,7 @@ public class LoanService implements ILoanService {
         return new LoanResponseDTO(
                 loan.getId(),
                 loan.getCopyId(),
+                loan.getBookId(),
                 loan.getStudentId(),
                 loan.getLoanDate(),
                 loan.getReturnDate(),
@@ -118,8 +120,11 @@ public class LoanService implements ILoanService {
         loan.setLoanState(LoanState.Returned);
         loanRepository.save(loan);
 
-        // Cambiar la disponibilidad del ejemplar en el módulo de libros a "AVAILABLE"
+        // Actualizar la disponibilidad y el estado del ejemplar en el módulo de libros
         bookServiceClient.updateCopyDisponibility(returnRequest.getCopyId(), LoanState.Returned);
+
+        // Actualizar el estado en que llego el ejemplar en el módulo de libros
+        bookServiceClient.updateCopyState(returnRequest.getCopyId(), finalCopyState);
 
         // Retornar el DTO con los detalles de la devolución
         return new ReturnResponseDTO(loan.getId(), loanHistory.getDate(), finalCopyState);
@@ -128,6 +133,20 @@ public class LoanService implements ILoanService {
     @Override
     public List<Loan> loansActive() {
         return loanRepository.findByLoanState(LoanState.Loaned);
+    }
+
+    @Override
+    public List<Loan> loansActiveStudent(Long studentId) {
+        return loanRepository.findByStudentIdAndLoanState(studentId, LoanState.Loaned);
+    }
+
+    @Override
+    public List<Loan> loansAllStudent(Long studentId) {
+        return loanRepository.findByStudentId(studentId);
+    }
+
+    public List<Loan> loansAll(){
+        return loanRepository.findAll();
     }
 
     public LoanHistory updateHistory(CopyState copyState){
@@ -161,9 +180,5 @@ public class LoanService implements ILoanService {
         }
 
         return loanDate.plusDays(daysToAdd);
-    }
-
-    public List<Loan> showLoan(){
-        return loanRepository.findAll();
     }
 }

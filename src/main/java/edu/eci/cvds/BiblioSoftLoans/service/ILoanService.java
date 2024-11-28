@@ -12,4 +12,8 @@ public interface ILoanService {
     ReturnResponseDTO returnBook(ReturnRequestDTO returnRequest);
 
     List<Loan> loansActive();
+
+    List<Loan> loansActiveStudent(Long studentId);
+
+    List<Loan> loansAllStudent(Long studentId);
 }

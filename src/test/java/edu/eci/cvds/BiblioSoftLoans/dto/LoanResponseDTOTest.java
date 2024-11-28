@@ -11,7 +11,7 @@ public class LoanResponseDTOTest {
 
     @Test
     public void testLoanResponseDTO() {
-        LoanResponseDTO loanResponse = new LoanResponseDTO(1L, "copy101", 101L, LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned, Collections.emptyList());
+        LoanResponseDTO loanResponse = new LoanResponseDTO(1L, "copy101", "book000",101L, LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned, Collections.emptyList());
 
         assertNotNull(loanResponse);
         assertEquals(Long.valueOf(1), loanResponse.getLoanId());
@@ -24,7 +24,7 @@ public class LoanResponseDTOTest {
 
     @Test
     public void testLoanResponseDTOWithEmptyLoanHistory() {
-        LoanResponseDTO loanResponse = new LoanResponseDTO(8L, "copy105", 108L, LocalDate.now(), LocalDate.now().plusDays(10), LoanState.Loaned, Collections.emptyList());
+        LoanResponseDTO loanResponse = new LoanResponseDTO(8L, "copy105", "book001", 108L, LocalDate.now(), LocalDate.now().plusDays(10), LoanState.Loaned, Collections.emptyList());
 
         assertNotNull(loanResponse);
         assertTrue(loanResponse.getLoanHistory().isEmpty());
@@ -33,21 +33,21 @@ public class LoanResponseDTOTest {
 
     @Test
     public void testLoanResponseDTOReturnDateBeforeLoanDate() {
-        LoanResponseDTO loanResponse = new LoanResponseDTO(10L, "copy107", 110L, LocalDate.now().plusDays(1), LocalDate.now(), LoanState.Loaned, Collections.emptyList());
+        LoanResponseDTO loanResponse = new LoanResponseDTO(10L, "copy107", "book002",110L, LocalDate.now().plusDays(1), LocalDate.now(), LoanState.Loaned, Collections.emptyList());
 
         assertTrue(loanResponse.getReturnDate().isBefore(loanResponse.getLoanDate()));
     }
 
     @Test
     public void testLoanResponseDTOReturnDateEqualsLoanDate() {
-        LoanResponseDTO loanResponse = new LoanResponseDTO(11L, "copy108", 111L, LocalDate.now(), LocalDate.now(), LoanState.Loaned, Collections.emptyList());
+        LoanResponseDTO loanResponse = new LoanResponseDTO(11L, "copy108", "book003",111L, LocalDate.now(), LocalDate.now(), LoanState.Loaned, Collections.emptyList());
 
         assertEquals(loanResponse.getLoanDate(), loanResponse.getReturnDate());
     }
 
     @Test
     public void testLoanResponseDTOLoanStateOverdue() {
-        LoanResponseDTO loanResponse = new LoanResponseDTO(13L, "copy110", 113L, LocalDate.now().minusDays(10), LocalDate.now().minusDays(5), LoanState.Loaned, Collections.emptyList());
+        LoanResponseDTO loanResponse = new LoanResponseDTO(13L, "copy110", "book004", 113L, LocalDate.now().minusDays(10), LocalDate.now().minusDays(5), LoanState.Loaned, Collections.emptyList());
 
         assertEquals(LoanState.Loaned, loanResponse.getLoanState());
         assertTrue(loanResponse.getLoanDate().isBefore(LocalDate.now()));
@@ -56,14 +56,14 @@ public class LoanResponseDTOTest {
 
     @Test
     public void testLoanResponseDTOWithNullLoanHistory() {
-        LoanResponseDTO loanResponse = new LoanResponseDTO(14L, "copy111", 114L, LocalDate.now(), LocalDate.now().plusDays(5), LoanState.Loaned, null);
+        LoanResponseDTO loanResponse = new LoanResponseDTO(14L, "copy111","book005", 114L, LocalDate.now(), LocalDate.now().plusDays(5), LoanState.Loaned, null);
 
         assertNull(loanResponse.getLoanHistory());
     }
 
     @Test
     public void testLoanResponseDTOWithInvalidState() {
-        LoanResponseDTO loanResponse = new LoanResponseDTO(15L, "copy112", 115L, LocalDate.now(), LocalDate.now().plusDays(3), LoanState.Loaned, Collections.emptyList());
+        LoanResponseDTO loanResponse = new LoanResponseDTO(15L, "copy112", "book006",115L, LocalDate.now(), LocalDate.now().plusDays(3), LoanState.Loaned, Collections.emptyList());
 
         assertEquals(LoanState.Loaned, loanResponse.getLoanState());
         assertNotNull(loanResponse.getLoanDate());
