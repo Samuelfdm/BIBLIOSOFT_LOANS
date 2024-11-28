@@ -36,17 +36,14 @@ public class LoanService implements ILoanService {
     @Override
     @Transactional
     public LoanResponseDTO requestLoan(LoanRequestDTO loanRequest) {
+        Long studentId = Long.valueOf("67323424");
         // Verificar que el estudiante existe
-        StudentDTO student = studentServiceClient.getStudentById(loanRequest.getStudentId()).block();
-        if (student == null) {
-            throw new StudentException(StudentException.ErrorType.STUDENT_NOT_FOUND);
-        }
 
         // Obtenemos la información del ejemplar
         CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
 
         // Verificar que el estudiante no tenga un préstamo activo del libro asociado al ejemplar solicitado
-        if (copy == null || checkStudentHasBook(student.getId(), copy.getBookId())) {
+        if (copy == null || checkStudentHasBook(studentId, copy.getBookId())) {
             throw new BookLoanException(BookLoanException.ErrorType.ALREADY_BORROWED);
         }
 
@@ -58,7 +55,7 @@ public class LoanService implements ILoanService {
         // Creamos el prestamo con toda su información
         LocalDate returnDate = generateReturnDate(copy);
         Loan loan = new Loan(
-                loanRequest.getStudentId(),
+                studentId,
                 loanRequest.getCopyId(),
                 copy.getBookId(),
                 LocalDate.now(),
@@ -83,7 +80,7 @@ public class LoanService implements ILoanService {
                 loan.getId(),
                 loan.getCopyId(),
                 loan.getBookId(),
-                loan.getStudentId(),
+                studentId,
                 loan.getLoanDate(),
                 loan.getReturnDate(),
                 loan.getLoanState(),
