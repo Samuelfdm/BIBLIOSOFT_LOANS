@@ -1,5 +1,5 @@
 package edu.eci.cvds.BiblioSoftLoans.model;
-/*
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ class LoanHistoryTest {
 
     @BeforeEach
     void setUp() {
-        loan = new Loan(1L, "COPY123", LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
+        loan = new Loan(1L, "COPY123", "BOOK000",LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
         loanHistory = new LoanHistory(LocalDate.now(), CopyState.Good);
         loanHistory.setLoan(loan);
     }
@@ -39,7 +39,7 @@ class LoanHistoryTest {
 
     @Test
     void testSetLoan() {
-        Loan newLoan = new Loan(2L, "COPY789", LocalDate.now(), LocalDate.now().plusDays(10), LoanState.Loaned);
+        Loan newLoan = new Loan(2L, "COPY789", "BOOK001",LocalDate.now(), LocalDate.now().plusDays(10), LoanState.Loaned);
         loanHistory.setLoan(newLoan);
         assertEquals(newLoan, loanHistory.getLoan());
     }
@@ -64,7 +64,7 @@ class LoanHistoryTest {
 
     @Test
     void testLoanHistoryLoanNotNullAfterSet() {
-        Loan newLoan = new Loan(2L, "COPY999", LocalDate.now(), LocalDate.now().plusDays(5), LoanState.Loaned);
+        Loan newLoan = new Loan(2L, "COPY999", "BOOK002",LocalDate.now(), LocalDate.now().plusDays(5), LoanState.Loaned);
         loanHistory.setLoan(newLoan);
         assertNotNull(loanHistory.getLoan());
     }
@@ -94,9 +94,8 @@ class LoanHistoryTest {
 
     @Test
     void testLoanAssociationIntegrity() {
-        Loan anotherLoan = new Loan(3L, "COPY555", LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
+        Loan anotherLoan = new Loan(3L, "COPY555", "BOOK003",LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
         loanHistory.setLoan(anotherLoan);
         assertEquals(anotherLoan, loanHistory.getLoan());
     }
 }
-*/

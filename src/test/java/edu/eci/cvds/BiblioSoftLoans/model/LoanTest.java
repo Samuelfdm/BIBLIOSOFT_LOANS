@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
-/*
+
 class LoanTest {
 
     private Loan loan;
@@ -17,6 +17,7 @@ class LoanTest {
         loan = new Loan(
                 1L,
                 "COPY123",
+                "BOOK000",
                 LocalDate.now(),
                 LocalDate.now().plusDays(7),
                 LoanState.Loaned
@@ -130,4 +131,3 @@ class LoanTest {
         assertEquals("COPY456", loan.getCopyId());
     }
 }
-*/
