@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Data
 public class LoanRequestDTO {
-    private Long studentId; // ID del estudiante que toma el préstamo
-    private String copyId;  // ID de la copia o ejemplar que se presta
+    private Long studentId;
+    private String copyId;
 }

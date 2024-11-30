@@ -1,6 +1,7 @@
 package edu.eci.cvds.BiblioSoftLoans.controller;
 
 import edu.eci.cvds.BiblioSoftLoans.dto.*;
+import edu.eci.cvds.BiblioSoftLoans.model.Loan;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
 import edu.eci.cvds.BiblioSoftLoans.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,27 @@ public class LoanController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{loanId}/history")
-    public ResponseEntity<List<LoanHistory>> getLoanHistory(@PathVariable Long loanId) {
-        try {
-            List<LoanHistory> loanHistory = loanService.getLoanHistory(loanId);
-            return ResponseEntity.ok(loanHistory);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+    // Endpoint para obtener todos los prestamos ACTIVOS de todos los estudiantes
+    @GetMapping("/loansActive")
+    public List<Loan> loansActive() {
+        return loanService.loansActive();
+    }
+
+    // Endpoint para obtener todos los prestamos ACTIVOS de un estudiante en especifico
+    @GetMapping("/loansActive/{studentId}")
+    public List<Loan> loansActiveStudent(@PathVariable Long studentId) {
+        return loanService.loansActiveStudent(studentId);
+    }
+
+    // Endpoint para obtener todos los prestamos ACTIVOS e INACTIVOS de un estudiante en especifico
+    @GetMapping("/loansAll/{studentId}")
+    public List<Loan> loansAllStudent(@PathVariable Long studentId) {
+        return loanService.loansAllStudent(studentId);
+    }
+
+    // Endpoint para obtener todos los prestamos ACTIVOS e INACTIVOS de TODOS
+    @GetMapping
+    public List<Loan> loansAll(){
+        return loanService.loansAll();
     }
 }

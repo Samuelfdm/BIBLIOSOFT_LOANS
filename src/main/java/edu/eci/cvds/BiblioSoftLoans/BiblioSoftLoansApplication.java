@@ -9,5 +9,4 @@ public class BiblioSoftLoansApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BiblioSoftLoansApplication.class, args);
 	}
-
 }

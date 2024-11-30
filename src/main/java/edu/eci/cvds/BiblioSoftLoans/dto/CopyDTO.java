@@ -13,4 +13,5 @@ public class CopyDTO {
     private String barCode;
     private String state; // Ej. "GOOD", "MODERATE", "DAMAGED"
     private String disponibility; // Ej. "AVAILABLE", "LOANED"
+    private String category;
 }
