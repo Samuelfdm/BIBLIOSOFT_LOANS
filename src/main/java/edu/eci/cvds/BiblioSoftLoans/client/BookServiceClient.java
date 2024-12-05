@@ -19,11 +19,9 @@ public class BookServiceClient {
                 .build();
     }
 
-    //NOS FALTA CORREGIR LAS URL DEL MODULO DE LIBROS, LOS ENDPOINTS...
-
     public Mono<CopyDTO> getBookCopyById(String copyId) {
         return webClient.get()
-                .uri("/books/copies/{copyId}", copyId)
+                .uri("/getCopies", copyId)
                 .retrieve()
                 .bodyToMono(CopyDTO.class);
     }

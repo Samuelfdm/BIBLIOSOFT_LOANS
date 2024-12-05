@@ -33,25 +33,25 @@ public class LoanController {
         return ResponseEntity.ok(response);
     }
 
-    // Endpoint para obtener todos los prestamos ACTIVOS de todos los estudiantes
+    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de TODOS
     @GetMapping("/loansActive")
     public List<Loan> loansActive() {
         return loanService.loansActive();
     }
 
-    // Endpoint para obtener todos los prestamos ACTIVOS de un estudiante en especifico
+    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de un estudiante en especifico
     @GetMapping("/loansActive/{studentId}")
     public List<Loan> loansActiveStudent(@PathVariable Long studentId) {
         return loanService.loansActiveStudent(studentId);
     }
 
-    // Endpoint para obtener todos los prestamos ACTIVOS e INACTIVOS de un estudiante en especifico
+    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos y Devueltos) de un estudiante en especifico
     @GetMapping("/loansAll/{studentId}")
     public List<Loan> loansAllStudent(@PathVariable Long studentId) {
         return loanService.loansAllStudent(studentId);
     }
 
-    // Endpoint para obtener todos los prestamos ACTIVOS e INACTIVOS de TODOS
+    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos y Devueltos) de TODOS
     @GetMapping
     public List<Loan> loansAll(){
         return loanService.loansAll();
