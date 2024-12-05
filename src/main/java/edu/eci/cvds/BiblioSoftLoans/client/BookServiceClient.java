@@ -19,9 +19,11 @@ public class BookServiceClient {
                 .build();
     }
 
+    //NOS FALTA CORREGIR LAS URL DEL MODULO DE LIBROS, LOS ENDPOINTS...
+
     public Mono<CopyDTO> getBookCopyById(String copyId) {
         return webClient.get()
-                .uri("/getCopies", copyId)
+                .uri("/getCopy?id={copyId}", copyId)
                 .retrieve()
                 .bodyToMono(CopyDTO.class);
     }
@@ -32,7 +34,7 @@ public class BookServiceClient {
 
         // Realizamos la solicitud PUT al servicio de libros
         webClient.put()
-                .uri("/copies/{copyId}/disponibility", copyId) // AJUSTAR LA URI SEGUN EL MODULO DE LIBROS
+                .uri("/updateBook/?id={copyId}/disponibility", copyId) // AJUSTAR LA URI SEGUN EL MODULO DE LIBROS
                 .bodyValue(disponibility)
                 .retrieve()
                 .bodyToMono(Void.class)

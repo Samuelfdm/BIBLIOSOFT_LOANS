@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/loans")
-public class LoanController {
+public class LoanController implements ILoanController{
 
     @Autowired
     private LoanService loanService;
@@ -33,27 +33,27 @@ public class LoanController {
         return ResponseEntity.ok(response);
     }
 
-    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de TODOS
-    @GetMapping("/loansActive")
-    public List<Loan> loansActive() {
-        return loanService.loansActive();
+    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos y Devueltos) de TODOS los estudiantes
+    @GetMapping("/getLoans")
+    public List<Loan> getLoans() {
+        return loanService.getLoans();
     }
 
-    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de un estudiante en especifico
-    @GetMapping("/loansActive/{studentId}")
-    public List<Loan> loansActiveStudent(@PathVariable Long studentId) {
-        return loanService.loansActiveStudent(studentId);
+    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de TODOS los estudiantes
+    @GetMapping("/getLoans/state")
+    public List<Loan> getLoans(@RequestParam(value = "state") String state) {
+        return loanService.getLoans(state);
     }
 
     // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos y Devueltos) de un estudiante en especifico
-    @GetMapping("/loansAll/{studentId}")
-    public List<Loan> loansAllStudent(@PathVariable Long studentId) {
-        return loanService.loansAllStudent(studentId);
+    @GetMapping("/getLoans/{studentId}")
+    public List<Loan> getLoansStudent(@PathVariable Long studentId) {
+        return loanService.getLoansStudent(studentId);
     }
 
-    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos y Devueltos) de TODOS
-    @GetMapping
-    public List<Loan> loansAll(){
-        return loanService.loansAll();
+    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de un estudiante en especifico
+    @GetMapping("/getLoans/state/{studentId}")
+    public List<Loan> getLoansStudent(@PathVariable Long studentId, @RequestParam(value = "state") String state) {
+        return loanService.getLoansStudent(studentId, state);
     }
 }

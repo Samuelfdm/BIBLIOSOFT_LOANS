@@ -36,17 +36,19 @@ public class LoanService implements ILoanService {
     @Override
     @Transactional
     public LoanResponseDTO requestLoan(LoanRequestDTO loanRequest) {
+        Long studentId = Long.valueOf("67323424");
         // Verificar que el estudiante existe
+        /*
         StudentDTO student = studentServiceClient.getStudentById(loanRequest.getStudentId()).block();
         if (student == null) {
             throw new StudentException(StudentException.ErrorType.STUDENT_NOT_FOUND);
-        }
+        }*/
 
         // Obtenemos la información del ejemplar
         CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
 
         // Verificar que el estudiante no tenga un préstamo activo del libro asociado al ejemplar solicitado
-        if (copy == null || checkStudentHasBook(student.getId(), copy.getBookId())) {
+        if (copy == null || checkStudentHasBook(studentId, copy.getBookId())) {
             throw new BookLoanException(BookLoanException.ErrorType.ALREADY_BORROWED);
         }
 
@@ -91,17 +93,6 @@ public class LoanService implements ILoanService {
         );
     }
 
-    /**
-     * Checks if a student currently has a specific book loaned.
-     *
-     * @param studentId the ID of the student.
-     * @param bookCode the code of the book.
-     * @return true if the student has the book, false otherwise.
-     */
-    public boolean checkStudentHasBook(Long studentId, String bookCode) {
-         return loanRepository.findByBookIdAndStudentIdAndLoanState(bookCode, studentId, LoanState.Loaned);
-    }
-
     @Override
     @Transactional
     public ReturnResponseDTO returnBook(ReturnRequestDTO returnRequest) {
@@ -131,28 +122,40 @@ public class LoanService implements ILoanService {
     }
 
     @Override
-    public List<Loan> loansActive() {
-        return loanRepository.findByLoanState(LoanState.Loaned);
+    public List<Loan> getLoans(){
+        return loanRepository.findAll();
     }
 
     @Override
-    public List<Loan> loansActiveStudent(Long studentId) {
-        return loanRepository.findByStudentIdAndLoanState(studentId, LoanState.Loaned);
+    public List<Loan> getLoans(String state) {
+        return loanRepository.findByLoanState(LoanState.valueOf(state));
     }
 
     @Override
-    public List<Loan> loansAllStudent(Long studentId) {
+    public List<Loan> getLoansStudent(Long studentId) {
         return loanRepository.findByStudentId(studentId);
     }
 
-    public List<Loan> loansAll(){
-        return loanRepository.findAll();
+    @Override
+    public List<Loan> getLoansStudent(Long studentId, String state) {
+        return loanRepository.findByStudentIdAndLoanState(studentId, LoanState.valueOf(state));
     }
 
     public LoanHistory updateHistory(CopyState copyState){
         //Actualizamos fechas de prestamo o retorno y los estados en que llego el ejemplar
         LoanHistory history = new LoanHistory(LocalDate.now(),copyState);
         return LoanHistoryRepository.save(history);
+    }
+
+    /**
+     * Checks if a student currently has a specific book loaned.
+     *
+     * @param studentId the ID of the student.
+     * @param bookCode the code of the book.
+     * @return true if the student has the book, false otherwise.
+     */
+    public boolean checkStudentHasBook(Long studentId, String bookCode) {
+        return loanRepository.findByBookIdAndStudentIdAndLoanState(bookCode, studentId, LoanState.Loaned);
     }
 
     /**
