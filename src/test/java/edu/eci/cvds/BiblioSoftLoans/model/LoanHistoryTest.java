@@ -1,5 +1,5 @@
 package edu.eci.cvds.BiblioSoftLoans.model;
-/*
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -12,14 +12,14 @@ class LoanHistoryTest {
 
     @BeforeEach
     void setUp() {
-        loan = new Loan(1L, "COPY123", LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
+        loan = new Loan(1L, "COPY123", "BOOK000",LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
         loanHistory = new LoanHistory(LocalDate.now(), CopyState.Good);
         loanHistory.setLoan(loan);
     }
 
     @Test
     void testLoanHistoryCreation() {
-        assertEquals(LocalDate.now(), loanHistory.getDate());
+        assertEquals(LocalDate.now(), loanHistory.getRecordDate());
         assertEquals(CopyState.Good, loanHistory.getCopyState());
         assertEquals(loan, loanHistory.getLoan());
     }
@@ -33,13 +33,13 @@ class LoanHistoryTest {
     @Test
     void testSetDate() {
         LocalDate newDate = LocalDate.now().minusDays(3);
-        loanHistory.setDate(newDate);
-        assertEquals(newDate, loanHistory.getDate());
+        loanHistory.setRecordDate(newDate);
+        assertEquals(newDate, loanHistory.getRecordDate());
     }
 
     @Test
     void testSetLoan() {
-        Loan newLoan = new Loan(2L, "COPY789", LocalDate.now(), LocalDate.now().plusDays(10), LoanState.Loaned);
+        Loan newLoan = new Loan(2L, "COPY789", "BOOK001",LocalDate.now(), LocalDate.now().plusDays(10), LoanState.Loaned);
         loanHistory.setLoan(newLoan);
         assertEquals(newLoan, loanHistory.getLoan());
     }
@@ -47,14 +47,14 @@ class LoanHistoryTest {
     @Test
     void testDefaultConstructor() {
         LoanHistory emptyLoanHistory = new LoanHistory();
-        assertNull(emptyLoanHistory.getDate());
+        assertNull(emptyLoanHistory.getRecordDate());
         assertNull(emptyLoanHistory.getCopyState());
         assertNull(emptyLoanHistory.getLoan());
     }
 
     @Test
     void testLoanHistoryDateNotNull() {
-        assertNotNull(loanHistory.getDate());
+        assertNotNull(loanHistory.getRecordDate());
     }
 
     @Test
@@ -64,39 +64,38 @@ class LoanHistoryTest {
 
     @Test
     void testLoanHistoryLoanNotNullAfterSet() {
-        Loan newLoan = new Loan(2L, "COPY999", LocalDate.now(), LocalDate.now().plusDays(5), LoanState.Loaned);
+        Loan newLoan = new Loan(2L, "COPY999", "BOOK002",LocalDate.now(), LocalDate.now().plusDays(5), LoanState.Loaned);
         loanHistory.setLoan(newLoan);
         assertNotNull(loanHistory.getLoan());
     }
 
     @Test
     void testDateInPast() {
-        loanHistory.setDate(LocalDate.now().minusDays(30));
-        assertTrue(loanHistory.getDate().isBefore(LocalDate.now()));
+        loanHistory.setRecordDate(LocalDate.now().minusDays(30));
+        assertTrue(loanHistory.getRecordDate().isBefore(LocalDate.now()));
     }
 
     @Test
     void testDateInFuture() {
-        loanHistory.setDate(LocalDate.now().plusDays(15));
-        assertTrue(loanHistory.getDate().isAfter(LocalDate.now()));
+        loanHistory.setRecordDate(LocalDate.now().plusDays(15));
+        assertTrue(loanHistory.getRecordDate().isAfter(LocalDate.now()));
     }
 
     @Test
     void testDateConsistencyOnMultipleChanges() {
         LocalDate newDate1 = LocalDate.now().minusDays(2);
         LocalDate newDate2 = LocalDate.now().plusDays(5);
-        loanHistory.setDate(newDate1);
-        assertEquals(newDate1, loanHistory.getDate());
+        loanHistory.setRecordDate(newDate1);
+        assertEquals(newDate1, loanHistory.getRecordDate());
 
-        loanHistory.setDate(newDate2);
-        assertEquals(newDate2, loanHistory.getDate());
+        loanHistory.setRecordDate(newDate2);
+        assertEquals(newDate2, loanHistory.getRecordDate());
     }
 
     @Test
     void testLoanAssociationIntegrity() {
-        Loan anotherLoan = new Loan(3L, "COPY555", LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
+        Loan anotherLoan = new Loan(3L, "COPY555", "BOOK003",LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
         loanHistory.setLoan(anotherLoan);
         assertEquals(anotherLoan, loanHistory.getLoan());
     }
 }
-*/

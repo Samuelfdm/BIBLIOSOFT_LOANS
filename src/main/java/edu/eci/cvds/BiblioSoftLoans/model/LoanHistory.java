@@ -17,19 +17,25 @@ public class LoanHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "record_date", nullable = false)
+    private LocalDate recordDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "copy_state", nullable = false)
     private CopyState copyState;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "loan_id")
+    @JoinColumn(name = "loan_id", nullable = false)
     private Loan loan;
 
-    public LoanHistory(LocalDate date, CopyState copyState) {
-        this.date = date;
+    public LoanHistory(LocalDate recordDate, CopyState copyState) {
+        this.recordDate = recordDate;
         this.copyState = copyState;
+    }
+
+    public LoanHistory(LocalDate recordDate, CopyState copyState, Loan loan) {
+        this.recordDate = recordDate;
+        this.copyState = copyState;
+        this.loan = loan;
     }
 }
