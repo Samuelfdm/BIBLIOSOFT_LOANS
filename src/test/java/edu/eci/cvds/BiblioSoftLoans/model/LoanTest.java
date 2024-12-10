@@ -35,7 +35,7 @@ class LoanTest {
         assertEquals("COPY123", loan.getCopyId());
         assertEquals("BOOK456", loan.getBookId());
         assertEquals(LocalDate.now(), loan.getLoanDate());
-        assertEquals(LocalDate.now().plusDays(7), loan.getReturnDate());
+        assertEquals(LocalDate.now().plusDays(7), loan.getMaxReturnDate());
         assertEquals(LoanState.Loaned, loan.getLoanState());
         assertTrue(loan.getLoanHistory().isEmpty());
     }
@@ -61,14 +61,14 @@ class LoanTest {
         loan.setCopyId("COPY789");
         loan.setBookId("BOOK987");
         loan.setLoanDate(LocalDate.now().minusDays(5));
-        loan.setReturnDate(LocalDate.now().plusDays(10));
+        loan.setMaxReturnDate(LocalDate.now().plusDays(10));
         loan.setLoanState(LoanState.Returned);
 
         assertEquals(2L, loan.getStudentId());
         assertEquals("COPY789", loan.getCopyId());
         assertEquals("BOOK987", loan.getBookId());
         assertEquals(LocalDate.now().minusDays(5), loan.getLoanDate());
-        assertEquals(LocalDate.now().plusDays(10), loan.getReturnDate());
+        assertEquals(LocalDate.now().plusDays(10), loan.getMaxReturnDate());
         assertEquals(LoanState.Returned, loan.getLoanState());
     }
 
@@ -82,7 +82,7 @@ class LoanTest {
     @Test
     void testHistoryDetailsAfterAddition() {
         loan.addHistory(loanHistory1);
-        assertEquals(LocalDate.now(), loan.getLoanHistory().get(0).getDate());
+        assertEquals(LocalDate.now(), loan.getLoanHistory().get(0).getRecordDate());
         assertEquals(CopyState.Good, loan.getLoanHistory().get(0).getCopyState());
     }
 
@@ -94,8 +94,8 @@ class LoanTest {
 
     @Test
     void testLoanReturnDateUpdate() {
-        loan.setReturnDate(LocalDate.now().plusDays(14));
-        assertEquals(LocalDate.now().plusDays(14), loan.getReturnDate());
+        loan.setMaxReturnDate(LocalDate.now().plusDays(14));
+        assertEquals(LocalDate.now().plusDays(14), loan.getMaxReturnDate());
     }
 
 

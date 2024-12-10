@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,24 +31,24 @@ public class Loan {
     @Column(name = "loan_date", nullable = false)
     private LocalDate loanDate;
 
-    @Column(name = "return_date", nullable = false)
-    private LocalDate returnDate;
+    @Column(name = "max_return_date", nullable = false)
+    private LocalDate maxReturnDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "loan_state", nullable = false)
     private LoanState loanState;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "loan_id")
+    @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LoanHistory> loanHistory;
 
-    public Loan(Long studentId, String copyId, String bookId, LocalDate loanDate, LocalDate returnDate, LoanState loanState) {
+    public Loan(Long studentId, String copyId, String bookId, LocalDate loanDate, LocalDate maxReturnDate, LoanState loanState) {
         this.studentId = studentId;
         this.copyId = copyId;
         this.bookId = bookId;
         this.loanDate = loanDate;
-        this.returnDate = returnDate;
+        this.maxReturnDate = maxReturnDate;
         this.loanState = loanState;
+        this.loanHistory = new ArrayList<>();
     }
 
     public void addHistory(LoanHistory loanHistory) {

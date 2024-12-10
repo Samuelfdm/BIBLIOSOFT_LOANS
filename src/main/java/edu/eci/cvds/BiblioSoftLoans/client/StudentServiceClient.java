@@ -10,13 +10,13 @@ import reactor.core.publisher.Mono;
 public class StudentServiceClient {
 
     private final WebClient webClient;
-
+    //El modulo de estudiantes aun no nos ha mostrado cual es su URI y por eso ponemos otra de ejemplo http://localhost:8082/api/students
     public StudentServiceClient(@Value("${student.service.url}") String studentServiceUrl) {
         this.webClient = WebClient.builder()
                 .baseUrl(studentServiceUrl)
                 .build();
     }
-
+    //Aqui falta corregir las URI por las reales que aun no nos mandan
     public Mono<StudentDTO> getStudentById(Long studentId) {
         return webClient.get()
                 .uri("/students/{studentId}", studentId)

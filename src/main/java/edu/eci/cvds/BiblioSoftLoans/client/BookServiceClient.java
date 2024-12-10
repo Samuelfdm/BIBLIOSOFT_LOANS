@@ -34,7 +34,7 @@ public class BookServiceClient {
 
         // Realizamos la solicitud PUT al servicio de libros
         webClient.put()
-                .uri("/updateBook/?id={copyId}/disponibility", copyId) // AJUSTAR LA URI SEGUN EL MODULO DE LIBROS
+                .uri("/updateBook/?id={copyId}/disponibility", copyId)
                 .bodyValue(disponibility)
                 .retrieve()
                 .bodyToMono(Void.class)
@@ -48,7 +48,7 @@ public class BookServiceClient {
     public void updateCopyState(String copyId, CopyState copyState) {
         // Realizamos la solicitud PUT al servicio de libros
         webClient.put()
-                .uri("/copies/{copyId}/state", copyId) // AJUSTAR LA URI SEGUN EL MODULO DE LIBROS
+                .uri("/updateBook/?id={copyId}/state", copyId)
                 .bodyValue(copyState)
                 .retrieve()
                 .bodyToMono(Void.class)

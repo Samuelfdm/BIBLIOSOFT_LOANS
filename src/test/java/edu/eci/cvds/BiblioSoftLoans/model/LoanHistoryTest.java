@@ -19,7 +19,7 @@ class LoanHistoryTest {
 
     @Test
     void testLoanHistoryCreation() {
-        assertEquals(LocalDate.now(), loanHistory.getDate());
+        assertEquals(LocalDate.now(), loanHistory.getRecordDate());
         assertEquals(CopyState.Good, loanHistory.getCopyState());
         assertEquals(loan, loanHistory.getLoan());
     }
@@ -33,8 +33,8 @@ class LoanHistoryTest {
     @Test
     void testSetDate() {
         LocalDate newDate = LocalDate.now().minusDays(3);
-        loanHistory.setDate(newDate);
-        assertEquals(newDate, loanHistory.getDate());
+        loanHistory.setRecordDate(newDate);
+        assertEquals(newDate, loanHistory.getRecordDate());
     }
 
     @Test
@@ -47,14 +47,14 @@ class LoanHistoryTest {
     @Test
     void testDefaultConstructor() {
         LoanHistory emptyLoanHistory = new LoanHistory();
-        assertNull(emptyLoanHistory.getDate());
+        assertNull(emptyLoanHistory.getRecordDate());
         assertNull(emptyLoanHistory.getCopyState());
         assertNull(emptyLoanHistory.getLoan());
     }
 
     @Test
     void testLoanHistoryDateNotNull() {
-        assertNotNull(loanHistory.getDate());
+        assertNotNull(loanHistory.getRecordDate());
     }
 
     @Test
@@ -71,25 +71,25 @@ class LoanHistoryTest {
 
     @Test
     void testDateInPast() {
-        loanHistory.setDate(LocalDate.now().minusDays(30));
-        assertTrue(loanHistory.getDate().isBefore(LocalDate.now()));
+        loanHistory.setRecordDate(LocalDate.now().minusDays(30));
+        assertTrue(loanHistory.getRecordDate().isBefore(LocalDate.now()));
     }
 
     @Test
     void testDateInFuture() {
-        loanHistory.setDate(LocalDate.now().plusDays(15));
-        assertTrue(loanHistory.getDate().isAfter(LocalDate.now()));
+        loanHistory.setRecordDate(LocalDate.now().plusDays(15));
+        assertTrue(loanHistory.getRecordDate().isAfter(LocalDate.now()));
     }
 
     @Test
     void testDateConsistencyOnMultipleChanges() {
         LocalDate newDate1 = LocalDate.now().minusDays(2);
         LocalDate newDate2 = LocalDate.now().plusDays(5);
-        loanHistory.setDate(newDate1);
-        assertEquals(newDate1, loanHistory.getDate());
+        loanHistory.setRecordDate(newDate1);
+        assertEquals(newDate1, loanHistory.getRecordDate());
 
-        loanHistory.setDate(newDate2);
-        assertEquals(newDate2, loanHistory.getDate());
+        loanHistory.setRecordDate(newDate2);
+        assertEquals(newDate2, loanHistory.getRecordDate());
     }
 
     @Test
