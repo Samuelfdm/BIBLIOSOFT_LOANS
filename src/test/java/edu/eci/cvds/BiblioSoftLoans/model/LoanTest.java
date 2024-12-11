@@ -15,7 +15,7 @@ class LoanTest {
     @BeforeEach
     void setUp() {
         loan = new Loan(
-                1L,
+                "67323424",
                 "COPY123",
                 "BOOK000",
                 LocalDate.now(),
@@ -25,13 +25,13 @@ class LoanTest {
         loan.setBookId("BOOK456");
         loan.setLoanHistory(new ArrayList<>());
 
-        loanHistory1 = new LoanHistory(LocalDate.now(), CopyState.Good);
+        loanHistory1 = new LoanHistory(LocalDate.now(), CopyState.BUENO);
         loanHistory2 = new LoanHistory(LocalDate.now().minusDays(2), CopyState.Damaged);
     }
 
     @Test
     void testLoanCreation() {
-        assertEquals(1L, loan.getStudentId());
+        assertEquals("67323424", loan.getStudentId());
         assertEquals("COPY123", loan.getCopyId());
         assertEquals("BOOK456", loan.getBookId());
         assertEquals(LocalDate.now(), loan.getLoanDate());
@@ -43,7 +43,7 @@ class LoanTest {
     @Test
     void testAddHistory() {
         loan.addHistory(loanHistory1);
-        assertEquals(1, loan.getLoanHistory().size());
+        assertEquals("67323424", loan.getLoanHistory().size());
         assertEquals(loan, loanHistory1.getLoan());
     }
 
@@ -57,14 +57,14 @@ class LoanTest {
 
     @Test
     void testSettersAndGetters() {
-        loan.setStudentId(2L);
+        loan.setStudentId("67323424");
         loan.setCopyId("COPY789");
         loan.setBookId("BOOK987");
         loan.setLoanDate(LocalDate.now().minusDays(5));
         loan.setMaxReturnDate(LocalDate.now().plusDays(10));
         loan.setLoanState(LoanState.Returned);
 
-        assertEquals(2L, loan.getStudentId());
+        assertEquals("67323424", loan.getStudentId());
         assertEquals("COPY789", loan.getCopyId());
         assertEquals("BOOK987", loan.getBookId());
         assertEquals(LocalDate.now().minusDays(5), loan.getLoanDate());
@@ -83,7 +83,7 @@ class LoanTest {
     void testHistoryDetailsAfterAddition() {
         loan.addHistory(loanHistory1);
         assertEquals(LocalDate.now(), loan.getLoanHistory().get(0).getRecordDate());
-        assertEquals(CopyState.Good, loan.getLoanHistory().get(0).getCopyState());
+        assertEquals(CopyState.BUENO, loan.getLoanHistory().get(0).getCopyState());
     }
 
     @Test
@@ -125,7 +125,7 @@ class LoanTest {
 
     @Test
     void testLoanUpdateProperties() {
-        loan.setStudentId(3L);
+        loan.setStudentId("67323424");
         loan.setCopyId("COPY456");
         assertEquals(3L, loan.getStudentId());
         assertEquals("COPY456", loan.getCopyId());

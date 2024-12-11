@@ -1,5 +1,6 @@
 package edu.eci.cvds.BiblioSoftLoans.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,13 +21,13 @@ public class Loan {
     private Long id;
 
     @Column(name = "student_id", nullable = false)
-    private Long studentId; // ID del estudiante (referencia externa)
+    private String studentId; // ID del estudiante
 
     @Column(name = "copy_id", nullable = false)
-    private String copyId; // Código del ejemplar/copia (referencia externa)
+    private String copyId; // Código del ejemplar/copia
 
     @Column(name = "book_id", nullable = false)
-    private String bookId; // Código del libro (referencia externa)
+    private String bookId; // Código del libro
 
     @Column(name = "loan_date", nullable = false)
     private LocalDate loanDate;
@@ -39,9 +40,10 @@ public class Loan {
     private LoanState loanState;
 
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<LoanHistory> loanHistory;
 
-    public Loan(Long studentId, String copyId, String bookId, LocalDate loanDate, LocalDate maxReturnDate, LoanState loanState) {
+    public Loan(String studentId, String copyId, String bookId, LocalDate loanDate, LocalDate maxReturnDate, LoanState loanState) {
         this.studentId = studentId;
         this.copyId = copyId;
         this.bookId = bookId;

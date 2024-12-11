@@ -39,6 +39,7 @@ public class LoanController implements ILoanController{
         return loanService.getLoans();
     }
 
+    //falta
     // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de TODOS los estudiantes
     @GetMapping("/getLoans/state")
     public List<Loan> getLoans(@RequestParam(value = "state") String state) {
@@ -47,13 +48,19 @@ public class LoanController implements ILoanController{
 
     // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos y Devueltos) de un estudiante en especifico
     @GetMapping("/getLoans/{studentId}")
-    public List<Loan> getLoansStudent(@PathVariable Long studentId) {
+    public List<Loan> getLoansStudent(@PathVariable String studentId) {
         return loanService.getLoansStudent(studentId);
     }
 
+    //falta
     // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de un estudiante en especifico
     @GetMapping("/getLoans/state/{studentId}")
-    public List<Loan> getLoansStudent(@PathVariable Long studentId, @RequestParam(value = "state") String state) {
-        return loanService.getLoansStudent(studentId, state);
+    public List<Loan> getLoansStudent(@PathVariable String studentId, @RequestParam(value = "state") String state) {
+        return loanService.getLoansStudentState(studentId, state);
+    }
+
+    @GetMapping("/getHistory")
+    public List<LoanHistory> getLoansStudent() {
+        return loanService.getHistory();
     }
 }

@@ -1,17 +1,41 @@
 package edu.eci.cvds.BiblioSoftLoans.dto;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 @Getter
 @Setter
 @Data
+@AllArgsConstructor
 public class CopyDTO {
+    @JsonProperty("id")
     private String id;
-    private String bookId;
+
+    @JsonProperty("book")
+    private String book;
+
+    @JsonProperty("state")
+    private String state;
+
+    @JsonProperty("barCode")
     private String barCode;
-    private String state; // Ej. "GOOD", "MODERATE", "DAMAGED"
-    private String disponibility; // Ej. "AVAILABLE", "LOANED"
-    private String category;
+
+    @JsonProperty("ubication")
+    private String ubication;
+
+    @JsonProperty("disponibility")
+    private CopyDispo disponibility; // Enum
+
+    @JsonProperty("active")
+    private boolean active;
+
+    // Constructor vacío
+    public CopyDTO() {}
+
+    public enum CopyDispo {
+        AVAILABLE,
+        BORROWED;
+    }
+
 }

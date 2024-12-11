@@ -19,7 +19,7 @@ public interface ILoanController {
 
     List<Loan> getLoans(String state);
 
-    List<Loan> getLoansStudent(Long studentId);
+    List<Loan> getLoansStudent(String studentId);
 
-    List<Loan> getLoansStudent(Long studentId, String state);
+    List<Loan> getLoansStudent(String studentId, String state);
 }

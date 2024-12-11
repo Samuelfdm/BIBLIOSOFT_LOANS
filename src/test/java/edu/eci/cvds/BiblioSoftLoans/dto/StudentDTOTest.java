@@ -7,7 +7,7 @@ public class StudentDTOTest {
     @Test
     public void testStudentDTOConstructor() {
         StudentDTO student = new StudentDTO();
-        student.setId(1L);
+        student.setId("67323424");
         student.setFullName("John Doe");
 
         assertNotNull(student);
@@ -29,7 +29,7 @@ public class StudentDTOTest {
     @Test
     public void testStudentDTOWithNullFullName() {
         StudentDTO student = new StudentDTO();
-        student.setId(2L);
+        student.setId("67323424");
         student.setFullName(null);
 
         assertNotNull(student);
@@ -40,7 +40,7 @@ public class StudentDTOTest {
     @Test
     public void testStudentDTOWithEmptyFullName() {
         StudentDTO student = new StudentDTO();
-        student.setId(3L);
+        student.setId("67323424");
         student.setFullName("");
 
         assertNotNull(student);
@@ -51,7 +51,7 @@ public class StudentDTOTest {
     @Test
     public void testStudentDTOWithValidData() {
         StudentDTO student = new StudentDTO();
-        student.setId(4L);
+        student.setId("67323424");
         student.setFullName("Alice Cooper");
 
         assertNotNull(student);
@@ -73,11 +73,11 @@ public class StudentDTOTest {
     @Test
     public void testStudentDTOEquality() {
         StudentDTO student1 = new StudentDTO();
-        student1.setId(5L);
+        student1.setId("67323424");
         student1.setFullName("Bob Marley");
 
         StudentDTO student2 = new StudentDTO();
-        student2.setId(5L);
+        student2.setId("67323424");
         student2.setFullName("Bob Marley");
 
         assertEquals(student1, student2);

@@ -1,5 +1,6 @@
 package edu.eci.cvds.BiblioSoftLoans.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class LoanHistory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loan_id", nullable = false)
+    @JsonBackReference
     private Loan loan;
 
     public LoanHistory(LocalDate recordDate, CopyState copyState) {
