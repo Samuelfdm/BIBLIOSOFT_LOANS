@@ -37,7 +37,7 @@ public class LoanService implements ILoanService {
     @Override
     @Transactional
     public LoanResponseDTO requestLoan(LoanRequestDTO loanRequest) {
-        String studentId = "67323424";
+        String studentId = loanRequest.getStudentId();
         // Verificar que el estudiante existe
 
         //StudentDTO student = studentServiceClient.getStudentById(loanRequest.getStudentId()).block();
@@ -50,13 +50,11 @@ public class LoanService implements ILoanService {
 
         // Verificar que el estudiante no tenga un préstamo activo del libro asociado al ejemplar solicitado
         if (copy == null || checkStudentHasBook(studentId, copy.getBook())) {
-            System.out.println("error 1");
             throw new BookLoanException(BookLoanException.ErrorType.ALREADY_BORROWED);
         }
 
         //Verificamos la disponibilidad del ejemplar
         if (copy.getDisponibility() != null && !CopyDTO.CopyDispo.AVAILABLE.equals(copy.getDisponibility())) {
-            System.out.println("error 2");
             throw new BookLoanException(BookLoanException.ErrorType.STUDENT_ALREADY_HAS_BOOK);
         }
 
@@ -76,16 +74,9 @@ public class LoanService implements ILoanService {
         // Guardar el préstamo en la base de datos
         loanRepository.save(loan);
 
-        // Actualizar la información del Historial del ejemplar en el prestamo
         String initialCopyState = copy.getState();
         // Crea el nuevo registro de historial y lo guarda en la base de datos LoanHistory
         LoanHistory loanHistory = updateHistory(CopyState.valueOf(initialCopyState),loan);
-
-
-
-
-        // Cambiar la disponibilidad del ejemplar en el módulo de libros a "BORROWED"
-        //bookServiceClient.updateCopyDisponibility(loanRequest.getCopyId(), LoanState.Loaned);
 
         // Retornar la respuesta del préstamo
         return new LoanResponseDTO(
