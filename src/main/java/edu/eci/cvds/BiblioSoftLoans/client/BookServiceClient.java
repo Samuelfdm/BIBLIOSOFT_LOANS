@@ -3,6 +3,7 @@ package edu.eci.cvds.BiblioSoftLoans.client;
 import edu.eci.cvds.BiblioSoftLoans.dto.ApiResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.BookDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.CopyDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.CopyUpdateDTO;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookApiException;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookLoanException;
 import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
@@ -76,21 +77,20 @@ public class BookServiceClient {
     }
 
     // Actualizar disponibilidad de un ejemplar
-    public void updateCopy(String copyId, CopyDTO.CopyDispo loanState, CopyState state) {
-        CopyDTO copy = getBookCopyById(copyId).block();
-        if (copy == null) {
-            throw new BookApiException(BookApiException.ErrorType.DATA_NOT_FOUND);
-        }
-        copy.setDisponibility(loanState);
-        copy.setState(String.valueOf(state));
+    public void updateCopy(String copyId, CopyDTO.CopyDispo copyDispo, CopyState state) {
+        // Crear un objeto CopyUpdateDTO con los datos necesarios
+        CopyUpdateDTO update = new CopyUpdateDTO(copyId, copyDispo, state);
+
         try {
+            // Enviar la solicitud PATCH al endpoint correspondiente
             webClient.patch()
-                    .uri("/CopyModule/update")
-                    .bodyValue(copy) // Enviar el objeto actualizado
+                    .uri("/CopyModule/update") // URL del endpoint
+                    .bodyValue(update) // El objeto que contiene los datos a actualizar
                     .retrieve()
-                    .bodyToMono(Void.class)
-                    .block(); // Bloquear si es necesario
+                    .bodyToMono(Void.class) // Esperar la respuesta vacía
+                    .block(); // Bloquear hasta recibir la respuesta
         } catch (Exception e) {
+            // Capturar cualquier excepción y lanzar una personalizada
             throw new BookApiException(BookApiException.ErrorType.UPDATE_FAILED, e);
         }
     }

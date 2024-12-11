@@ -47,15 +47,16 @@ public class LoanService implements ILoanService {
         //}
 
         CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
-        System.out.println(copy.toString());
 
         // Verificar que el estudiante no tenga un préstamo activo del libro asociado al ejemplar solicitado
         if (copy == null || checkStudentHasBook(studentId, copy.getBook())) {
+            System.out.println("error 1");
             throw new BookLoanException(BookLoanException.ErrorType.ALREADY_BORROWED);
         }
 
         //Verificamos la disponibilidad del ejemplar
-        if (copy.getDisponibility() != null && !"AVAILABLE".equals(copy.getDisponibility())) {
+        if (copy.getDisponibility() != null && !CopyDTO.CopyDispo.AVAILABLE.equals(copy.getDisponibility())) {
+            System.out.println("error 2");
             throw new BookLoanException(BookLoanException.ErrorType.STUDENT_ALREADY_HAS_BOOK);
         }
 
@@ -69,6 +70,8 @@ public class LoanService implements ILoanService {
                 maxReturnDate,
                 LoanState.Loaned
         );
+
+        bookServiceClient.updateCopy(copy.getId(), CopyDTO.CopyDispo.BORROWED , CopyState.valueOf(copy.getState()));
 
         // Guardar el préstamo en la base de datos
         loanRepository.save(loan);
@@ -103,7 +106,6 @@ public class LoanService implements ILoanService {
         // Lógica para encontrar el préstamo correspondiente para retornar
         Loan loan = loanRepository.findByCopyIdAndStudentIdAndLoanState(returnRequest.getCopyId(), returnRequest.getStudentId(), LoanState.Loaned);
         if (loan == null) {
-            System.out.println("aqui si");
             throw new BookLoanException(BookLoanException.ErrorType.NO_LOAN_FOUND);
         }
 
@@ -178,9 +180,11 @@ public class LoanService implements ILoanService {
         int daysToAdd;
         try {
             daysToAdd = switch (bookCategory) {
-                case "Literatura" -> 14;
-                case "Infantil" -> 7;
-                case "Científico" -> 10;
+                case "Viaje y turismo" -> 14;
+                case "Fantasia" -> 14;
+                case "Historia" -> 10;
+                case "Ciencia Ficción" -> 12;
+                case "Aventura" -> 7;
                 default -> 18;
             };
         } catch (IllegalArgumentException e) {
