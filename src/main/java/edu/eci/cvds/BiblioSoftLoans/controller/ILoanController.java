@@ -1,7 +1,7 @@
 package edu.eci.cvds.BiblioSoftLoans.controller;
 
-import edu.eci.cvds.BiblioSoftLoans.dto.LoanRequestDTO;
-import edu.eci.cvds.BiblioSoftLoans.dto.LoanResponseDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanRequestDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.ReturnRequestDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.ReturnResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.model.Loan;

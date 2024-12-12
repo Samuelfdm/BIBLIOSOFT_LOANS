@@ -1,5 +1,5 @@
 package edu.eci.cvds.BiblioSoftLoans.dto;
-import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,28 +7,28 @@ public class ReturnRequestDTOTest {
 
     @Test
     public void testReturnRequestDTO() {
-            ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy101", CopyState.BUENO);
+        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy101", "BUENO");  // Usando String
 
         assertNotNull(returnRequest);
         assertEquals(Long.valueOf(1), returnRequest.getStudentId());
         assertEquals("copy101", returnRequest.getCopyId());
-        assertEquals(CopyState.BUENO, returnRequest.getFinalCopyState());
+        assertEquals("BUENO", returnRequest.getFinalCopyState());
     }
 
     @Test
     public void testReturnRequestDTOWithDamagedCopyState() {
-        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy102", CopyState.BUENO);
+        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy102", "DAÑADO");  // Usando String
 
         assertNotNull(returnRequest);
-        assertEquals(CopyState.BUENO, returnRequest.getFinalCopyState());
+        assertEquals("DAÑADO", returnRequest.getFinalCopyState());
     }
 
     @Test
     public void testReturnRequestDTOWithModerateCopyState() {
-        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy103", CopyState.BUENO);
+        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy103", "MODERADO");  // Usando String
 
         assertNotNull(returnRequest);
-        assertEquals(CopyState.BUENO, returnRequest.getFinalCopyState());
+        assertEquals("MODERADO", returnRequest.getFinalCopyState());
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ReturnRequestDTOTest {
 
     @Test
     public void testReturnRequestDTOWithNullStudentId() {
-        ReturnRequestDTO returnRequest = new ReturnRequestDTO(null, "copy105", CopyState.BUENO);
+        ReturnRequestDTO returnRequest = new ReturnRequestDTO(null, "copy105", "BUENO");  // Usando String
 
         assertNotNull(returnRequest);
         assertNull(returnRequest.getStudentId());
@@ -49,7 +49,7 @@ public class ReturnRequestDTOTest {
 
     @Test
     public void testReturnRequestDTOWithNullCopyId() {
-        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", null, CopyState.BUENO);
+        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", null, "BUENO");  // Usando String
 
         assertNotNull(returnRequest);
         assertNull(returnRequest.getCopyId());
@@ -67,19 +67,19 @@ public class ReturnRequestDTOTest {
 
     @Test
     public void testReturnRequestDTOWithValidAndInvalidCopyState() {
-        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy107", CopyState.BUENO);
+        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy107", "BUENO");  // Usando String
 
         assertNotNull(returnRequest);
-        assertEquals(CopyState.BUENO, returnRequest.getFinalCopyState());
+        assertEquals("BUENO", returnRequest.getFinalCopyState());
     }
 
     @Test
     public void testReturnRequestDTOWithAllValidFields() {
-        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy108", CopyState.BUENO);
+        ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy108", "BUENO");  // Usando String
 
         assertNotNull(returnRequest);
         assertEquals(Long.valueOf(8), returnRequest.getStudentId());
         assertEquals("copy108", returnRequest.getCopyId());
-        assertEquals(CopyState.BUENO, returnRequest.getFinalCopyState());
+        assertEquals("BUENO", returnRequest.getFinalCopyState());
     }
 }

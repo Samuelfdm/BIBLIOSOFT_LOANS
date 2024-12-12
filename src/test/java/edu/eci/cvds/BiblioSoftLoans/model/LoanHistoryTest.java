@@ -12,22 +12,22 @@ class LoanHistoryTest {
 
     @BeforeEach
     void setUp() {
-        loan = new Loan("67323424", "COPY123", "BOOK000",LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
-        loanHistory = new LoanHistory(LocalDate.now(), CopyState.BUENO);
+        loan = new Loan("67323424", "COPY123", "BOOK000", LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
+        loanHistory = new LoanHistory(LocalDate.now(), "BUENO");  // Usando String en lugar de CopyState
         loanHistory.setLoan(loan);
     }
 
     @Test
     void testLoanHistoryCreation() {
         assertEquals(LocalDate.now(), loanHistory.getRecordDate());
-        assertEquals(CopyState.BUENO, loanHistory.getCopyState());
+        assertEquals("BUENO", loanHistory.getCopyState());  // Usando String
         assertEquals(loan, loanHistory.getLoan());
     }
 
     @Test
     void testSetCopyState() {
-        loanHistory.setCopyState(CopyState.Damaged);
-        assertEquals(CopyState.Damaged, loanHistory.getCopyState());
+        loanHistory.setCopyState("Damaged");  // Usando String
+        assertEquals("Damaged", loanHistory.getCopyState());  // Usando String
     }
 
     @Test
@@ -39,7 +39,7 @@ class LoanHistoryTest {
 
     @Test
     void testSetLoan() {
-        Loan newLoan = new Loan("67323424", "COPY789", "BOOK001",LocalDate.now(), LocalDate.now().plusDays(10), LoanState.Loaned);
+        Loan newLoan = new Loan("67323424", "COPY789", "BOOK001", LocalDate.now(), LocalDate.now().plusDays(10), LoanState.Loaned);
         loanHistory.setLoan(newLoan);
         assertEquals(newLoan, loanHistory.getLoan());
     }
@@ -64,7 +64,7 @@ class LoanHistoryTest {
 
     @Test
     void testLoanHistoryLoanNotNullAfterSet() {
-        Loan newLoan = new Loan("67323424", "COPY999", "BOOK002",LocalDate.now(), LocalDate.now().plusDays(5), LoanState.Loaned);
+        Loan newLoan = new Loan("67323424", "COPY999", "BOOK002", LocalDate.now(), LocalDate.now().plusDays(5), LoanState.Loaned);
         loanHistory.setLoan(newLoan);
         assertNotNull(loanHistory.getLoan());
     }
@@ -94,7 +94,7 @@ class LoanHistoryTest {
 
     @Test
     void testLoanAssociationIntegrity() {
-        Loan anotherLoan = new Loan("67323424", "COPY555", "BOOK003",LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
+        Loan anotherLoan = new Loan("67323424", "COPY555", "BOOK003", LocalDate.now(), LocalDate.now().plusDays(7), LoanState.Loaned);
         loanHistory.setLoan(anotherLoan);
         assertEquals(anotherLoan, loanHistory.getLoan());
     }

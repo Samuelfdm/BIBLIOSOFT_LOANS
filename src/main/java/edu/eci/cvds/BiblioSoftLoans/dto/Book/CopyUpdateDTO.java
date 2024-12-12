@@ -17,13 +17,13 @@ public class CopyUpdateDTO {
     private String id;
 
     @JsonProperty("state")
-    private CopyState state;
+    private String state;
 
     @JsonProperty("disponibility")
     private CopyDTO.CopyDispo disponibility;
 
     // Constructor con parámetros
-    public CopyUpdateDTO(String copyId, CopyDTO.CopyDispo copyDispo, CopyState state) {
+    public CopyUpdateDTO(String copyId, CopyDTO.CopyDispo copyDispo, String state) {
         this.id = copyId;
         this.disponibility = copyDispo;
         this.state = state;

@@ -13,9 +13,9 @@ import java.time.LocalDate;
 public class HistoryLoanStudient {
     private String studentId;
     private LocalDate loanDate;
-    private CopyState loanState;
+    private String loanState;
 
-    public HistoryLoanStudient(String studentId, LocalDate loanDate, CopyState loanState) {
+    public HistoryLoanStudient(String studentId, LocalDate loanDate, String loanState) {
         this.studentId = studentId;
         this.loanDate = loanDate;
         this.loanState = loanState;

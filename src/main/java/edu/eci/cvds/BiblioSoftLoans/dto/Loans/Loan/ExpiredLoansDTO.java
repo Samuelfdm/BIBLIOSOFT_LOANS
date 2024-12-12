@@ -1,4 +1,4 @@
-package edu.eci.cvds.BiblioSoftLoans.dto;
+package edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan;
 
 import edu.eci.cvds.BiblioSoftLoans.model.Loan;
 import lombok.AllArgsConstructor;

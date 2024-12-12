@@ -14,9 +14,9 @@ import java.time.LocalDate;
 public class HistoryLoanBookDTO {
     private String copyId;
     private LocalDate loanDate;
-    private CopyState loanState;
+    private String loanState;
 
-    public HistoryLoanBookDTO(String copyId, LocalDate loanDate, CopyState loanState) {
+    public HistoryLoanBookDTO(String copyId, LocalDate loanDate, String loanState) {
         this.copyId = copyId;
         this.loanDate = loanDate;
         this.loanState = loanState;

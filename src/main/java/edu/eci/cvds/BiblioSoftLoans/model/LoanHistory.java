@@ -21,21 +21,20 @@ public class LoanHistory {
     @Column(name = "record_date", nullable = false)
     private LocalDate recordDate;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "copy_state", nullable = false)
-    private CopyState copyState;
+    private String copyState;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loan_id", nullable = false)
     @JsonBackReference
     private Loan loan;
 
-    public LoanHistory(LocalDate recordDate, CopyState copyState) {
+    public LoanHistory(LocalDate recordDate, String copyState) {
         this.recordDate = recordDate;
         this.copyState = copyState;
     }
 
-    public LoanHistory(LocalDate recordDate, CopyState copyState, Loan loan) {
+    public LoanHistory(LocalDate recordDate, String copyState, Loan loan) {
         this.recordDate = recordDate;
         this.copyState = copyState;
         this.loan = loan;

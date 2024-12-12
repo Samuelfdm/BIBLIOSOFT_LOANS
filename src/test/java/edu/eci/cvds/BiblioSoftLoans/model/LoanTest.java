@@ -25,8 +25,8 @@ class LoanTest {
         loan.setBookId("BOOK456");
         loan.setLoanHistory(new ArrayList<>());
 
-        loanHistory1 = new LoanHistory(LocalDate.now(), CopyState.BUENO);
-        loanHistory2 = new LoanHistory(LocalDate.now().minusDays(2), CopyState.Damaged);
+        loanHistory1 = new LoanHistory(LocalDate.now(), "BUENO");
+        loanHistory2 = new LoanHistory(LocalDate.now().minusDays(2), "Damaged");
     }
 
     @Test

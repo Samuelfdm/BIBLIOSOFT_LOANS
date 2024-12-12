@@ -1,6 +1,6 @@
 package edu.eci.cvds.BiblioSoftLoans.client;
 
-import edu.eci.cvds.BiblioSoftLoans.dto.ExpiredLoansDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.ExpiredLoansDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

@@ -7,9 +7,10 @@ import edu.eci.cvds.BiblioSoftLoans.dto.Book.BookDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanBookDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanRequestDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookApiException;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookLoanException;
-import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
 import edu.eci.cvds.BiblioSoftLoans.model.Loan;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanState;
@@ -18,9 +19,8 @@ import edu.eci.cvds.BiblioSoftLoans.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,27 +42,17 @@ public class LoanService implements ILoanService {
     @Transactional
     public LoanResponseDTO requestLoan(LoanRequestDTO loanRequest) {
         String studentId = loanRequest.getStudentId();
-        // Verificar que el estudiante existe
-
-        //StudentDTO student = studentServiceClient.getStudentById(loanRequest.getStudentId()).block();
-
-        //if (student == null) {
-            //throw new StudentException(StudentException.ErrorType.STUDENT_NOT_FOUND);
-        //}
-
         CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
 
-        // Verificar que el estudiante no tenga un préstamo activo del libro asociado al ejemplar solicitado
         if (copy == null || checkStudentHasBook(studentId, copy.getBook())) {
             throw new BookLoanException(BookLoanException.ErrorType.ALREADY_BORROWED);
         }
 
-        //Verificamos la disponibilidad del ejemplar
+
         if (copy.getDisponibility() != null && !CopyDTO.CopyDispo.AVAILABLE.equals(copy.getDisponibility())) {
             throw new BookLoanException(BookLoanException.ErrorType.STUDENT_ALREADY_HAS_BOOK);
         }
 
-        // Creamos el prestamo con toda su información
         LocalDate maxReturnDate = generateReturnDate(copy);
         Loan loan = new Loan(
                 studentId,
@@ -73,16 +63,15 @@ public class LoanService implements ILoanService {
                 LoanState.Loaned
         );
 
-        bookServiceClient.updateCopy(copy.getId(), CopyDTO.CopyDispo.BORROWED , CopyState.valueOf(copy.getState()));
+        bookServiceClient.updateCopy(copy.getId(), CopyDTO.CopyDispo.BORROWED , copy.getState());
 
-        // Guardar el préstamo en la base de datos
+
         loanRepository.save(loan);
 
         String initialCopyState = copy.getState();
-        // Crea el nuevo registro de historial y lo guarda en la base de datos LoanHistory
-        LoanHistory loanHistory = updateHistory(CopyState.valueOf(initialCopyState),loan);
+        LoanHistory loanHistory = updateHistory(initialCopyState,loan);
 
-        // Retornar la respuesta del préstamo
+
         return new LoanResponseDTO(
                 loan.getId(),
                 loan.getCopyId(),
@@ -98,26 +87,21 @@ public class LoanService implements ILoanService {
     @Override
     @Transactional
     public ReturnResponseDTO returnBook(ReturnRequestDTO returnRequest) {
-        // Lógica para encontrar el préstamo correspondiente para retornar
         Loan loan = loanRepository.findByCopyIdAndStudentIdAndLoanState(returnRequest.getCopyId(), returnRequest.getStudentId(), LoanState.Loaned);
         if (loan == null) {
             throw new BookLoanException(BookLoanException.ErrorType.NO_LOAN_FOUND);
         }
 
-        // Determinar el estado final de la copia
-        CopyState finalCopyState = returnRequest.getFinalCopyState();
 
-        // Crea el nuevo registro de historial y lo guarda en la base de datos LoanHistory
+        String finalCopyState = returnRequest.getFinalCopyState();
+
         LoanHistory loanHistory = updateHistory(finalCopyState,loan);
 
-        // Actualizar el préstamo en la base de datos, marcándolo como devuelto
+
         loan.setLoanState(LoanState.Returned);
         loanRepository.save(loan);
 
-        // Actualizar la disponibilidad y el estado del ejemplar en el módulo de libros
         bookServiceClient.updateCopy(returnRequest.getCopyId(), CopyDTO.CopyDispo.AVAILABLE,finalCopyState);
-
-        // Retornar el DTO con los detalles de la devolución
         return new ReturnResponseDTO(loan.getId(), loanHistory.getRecordDate(), finalCopyState);
     }
 
@@ -150,8 +134,7 @@ public class LoanService implements ILoanService {
         return List.of();
     }
 
-    public LoanHistory updateHistory(CopyState copyState,Loan loan){
-        //Actualizamos fechas de prestamo o retorno y los estados en que llego el ejemplar
+    public LoanHistory updateHistory(String copyState,Loan loan){
         LoanHistory history = new LoanHistory(LocalDate.now(),copyState, loan);
         return LoanHistoryRepository.save(history);
     }
@@ -192,10 +175,9 @@ public class LoanService implements ILoanService {
     public void checkForExpiredLoans() {
         List<Loan> activeLoans = loanRepository.findByLoanState(LoanState.Loaned);
         for (Loan loan : activeLoans) {
-            // Si la fecha de vencimiento ha pasado, cambiamos el estado del préstamo a Expired
             if (loan.getMaxReturnDate().isBefore(LocalDate.now())) {
                 loan.setLoanState(LoanState.Expired);
-                loanRepository.save(loan); // Guardar el préstamo actualizado
+                loanRepository.save(loan);
             }
         }
     }
@@ -212,4 +194,36 @@ public class LoanService implements ILoanService {
     public List<HistoryLoanBookDTO> getHistoryCopy(String copyId){
         return loanRepository.findLoanHistoryByCopyId(copyId);
     }
+
+    public List<String> getDisponibilitybyTitle(String title) {
+        List<CopyDTO> copies = bookServiceClient.getCopiesByTitle(title).block();
+        List<String> availableCopiesMessage = new ArrayList<>();
+
+        if (copies != null) {
+            for (CopyDTO copy : copies) {
+                if ("AVAILABLE".equalsIgnoreCase(String.valueOf(copy.getDisponibility()))) {
+                    availableCopiesMessage.add(copy.getId());
+                }
+            }
+        }
+
+        return availableCopiesMessage;
+    }
+
+    public List<String> getDisponibilitybyAuthor(String author) {
+        List<CopyDTO> copies = bookServiceClient.getCopiesByAuthor(author).block();
+        List<String> availableCopiesMessage = new ArrayList<>();
+
+        if (copies != null) {
+            for (CopyDTO copy : copies) {
+                if ("AVAILABLE".equalsIgnoreCase(String.valueOf(copy.getDisponibility()))) {
+                    availableCopiesMessage.add(copy.getId());
+                }
+            }
+        }
+
+        return availableCopiesMessage;
+    }
+
+
 }

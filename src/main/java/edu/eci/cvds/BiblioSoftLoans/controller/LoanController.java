@@ -1,8 +1,12 @@
 package edu.eci.cvds.BiblioSoftLoans.controller;
 
 import edu.eci.cvds.BiblioSoftLoans.dto.*;
+import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Book.requestdisponibilityDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanBookDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanRequestDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.model.Loan;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
 import edu.eci.cvds.BiblioSoftLoans.service.LoanService;
@@ -77,6 +81,24 @@ public class LoanController implements ILoanController{
         return loanService.getHistoryCopy(copyId);
     }
 
+    @PostMapping("/getDisponibilitybyTitle")
+    public List<String> getDisponibilitybyTitle(@RequestBody requestdisponibilityDTO request) {
+        if (request.getTitle() != null && !request.getTitle().isEmpty()) {
+            return loanService.getDisponibilitybyTitle(request.getTitle());
+        } else {
+            throw new IllegalArgumentException("El título no puede estar vacío.");
+        }
+    }
+
+
+    @PostMapping("/getDisponibilitybyAuthor")
+    public List<String> getDisponibilitybyAuthor(@RequestBody requestdisponibilityDTO request) {
+        if (request.getAuthor() != null && !request.getAuthor().isEmpty()) {
+            return loanService.getDisponibilitybyAuthor(request.getAuthor());
+        } else {
+            throw new IllegalArgumentException("El autor no puede estar vacío.");
+        }
+    }
 
 
 }
