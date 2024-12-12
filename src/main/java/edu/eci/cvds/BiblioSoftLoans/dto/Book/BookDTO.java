@@ -1,6 +1,5 @@
-package edu.eci.cvds.BiblioSoftLoans.dto;
+package edu.eci.cvds.BiblioSoftLoans.dto.Book;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

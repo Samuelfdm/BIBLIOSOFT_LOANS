@@ -1,6 +1,8 @@
 package edu.eci.cvds.BiblioSoftLoans.controller;
 
 import edu.eci.cvds.BiblioSoftLoans.dto.*;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanBookDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient;
 import edu.eci.cvds.BiblioSoftLoans.model.Loan;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
 import edu.eci.cvds.BiblioSoftLoans.service.LoanService;
@@ -60,9 +62,21 @@ public class LoanController implements ILoanController{
     }
 
     @GetMapping("/getHistory")
-    public List<LoanHistory> getLoansStudent() {
+    public List<LoanHistory> getHistory() {
         return loanService.getHistory();
     }
+
+
+    @GetMapping("/getHistoryStudient/{studentId}")
+    public List<HistoryLoanStudient> getHistoryStudient(@PathVariable String studentId) {
+        return loanService.getHistoryStudient(studentId);
+    }
+
+    @GetMapping("/getHistorybook/{copyId}")
+    public List<HistoryLoanBookDTO> getHistoryCopy(@PathVariable String copyId) {
+        return loanService.getHistoryCopy(copyId);
+    }
+
 
 
 }

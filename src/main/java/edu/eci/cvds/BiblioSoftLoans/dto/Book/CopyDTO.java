@@ -1,4 +1,4 @@
-package edu.eci.cvds.BiblioSoftLoans.dto;
+package edu.eci.cvds.BiblioSoftLoans.dto.Book;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

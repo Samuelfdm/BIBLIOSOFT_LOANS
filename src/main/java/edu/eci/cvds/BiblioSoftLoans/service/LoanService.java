@@ -3,6 +3,10 @@ package edu.eci.cvds.BiblioSoftLoans.service;
 import edu.eci.cvds.BiblioSoftLoans.client.BookServiceClient;
 import edu.eci.cvds.BiblioSoftLoans.client.StudentServiceClient;
 import edu.eci.cvds.BiblioSoftLoans.dto.*;
+import edu.eci.cvds.BiblioSoftLoans.dto.Book.BookDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanBookDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookApiException;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookLoanException;
 import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
@@ -198,5 +202,14 @@ public class LoanService implements ILoanService {
 
     public List<LoanHistory> getHistory(){
         return LoanHistoryRepository.findAll();
+    }
+
+
+    public List<HistoryLoanStudient> getHistoryStudient(String studentId){
+        return loanRepository.findLoanHistoryByStudentId(studentId);
+    }
+
+    public List<HistoryLoanBookDTO> getHistoryCopy(String copyId){
+        return loanRepository.findLoanHistoryByCopyId(copyId);
     }
 }
