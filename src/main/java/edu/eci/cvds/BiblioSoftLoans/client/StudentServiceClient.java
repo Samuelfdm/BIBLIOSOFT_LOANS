@@ -1,6 +1,6 @@
 package edu.eci.cvds.BiblioSoftLoans.client;
 
-import edu.eci.cvds.BiblioSoftLoans.dto.StudentDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Studient.StudentDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,11 +16,18 @@ public class StudentServiceClient {
                 .baseUrl(studentServiceUrl)
                 .build();
     }
-    //Aqui falta corregir las URI por las reales que aun no nos mandan
-    public Mono<StudentDTO> getStudentById(Long studentId) {
-        return webClient.get()
-                .uri("/students/{studentId}", studentId)
+
+    public Mono<String> getStudentById(String studentId, String token) {
+        return webClient.post()
+                .uri("/usuario/buscandoEstudiantePorId")
+                .header("Authorization", "Bearer " + token)
+                .bodyValue("{\"idEstudiante\":\"" + studentId + "\"}")
                 .retrieve()
-                .bodyToMono(StudentDTO.class);
+                .bodyToMono(String.class)
+                .doOnNext(name -> {
+                    System.out.println("Nombre del Estudiante: " + name);
+                });
     }
+
+
 }

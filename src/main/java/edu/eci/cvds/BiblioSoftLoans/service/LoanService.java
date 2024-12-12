@@ -225,5 +225,14 @@ public class LoanService implements ILoanService {
         return availableCopiesMessage;
     }
 
+    public CopyDTO.CopyDispo getDisponibilitybycode(String code) {
+        CopyDTO copies = bookServiceClient.getCopiesBycodebar(code).block();
+        return copies.getDisponibility();
+    }
+
+    public List<Loan> getActiveLoan(){
+        return loanRepository.findByLoanState(LoanState.Loaned);
+    }
+
 
 }

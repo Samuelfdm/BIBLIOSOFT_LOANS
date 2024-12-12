@@ -100,5 +100,10 @@ public class LoanController implements ILoanController{
         }
     }
 
+    @GetMapping("/getActiveloans")
+    public List<Loan> getActiveLoan() {
+        return loanService.getActiveLoan();
+    }
+
 
 }

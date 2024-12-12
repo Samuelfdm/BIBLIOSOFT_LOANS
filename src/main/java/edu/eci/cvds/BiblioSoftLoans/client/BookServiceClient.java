@@ -69,6 +69,15 @@ public class BookServiceClient {
     }
 
 
+    //traer copia por codigo de barras
+    public Mono<ApiResponseDTO<CopyDTO>> getBodyCopiesBycodebar(String code) {
+        return webClient.get()
+                .uri("/CopyModule/findByBarCode?barCode=" + code)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<ApiResponseDTO<CopyDTO>>() {});
+    }
+
+
     //traer el cuerpo de todas las copias de un libro
     public Mono<ApiResponseDTO<CopyDTO>> getBodyCopiesByBookId(String BookID) {
         return webClient.get()
@@ -136,14 +145,26 @@ public class BookServiceClient {
                 });
     }
 
-
-
     public Mono<BookDTO> getBookById(String bookId) {
         return getBodyBook(bookId)
                 .flatMap(apiResponseDTO -> {
                     if (apiResponseDTO != null && apiResponseDTO.getBody() != null && !apiResponseDTO.getBody().isEmpty()) {
                         BookDTO bookDTO = apiResponseDTO.getBody().get(0);
                         return Mono.just(bookDTO);
+                    } else {
+                        return Mono.error(new RuntimeException("No book found in the response"));
+                    }
+                });
+    }
+
+
+
+    public Mono<CopyDTO> getCopiesBycodebar(String code) {
+        return getBodyCopiesBycodebar(code)
+                .flatMap(apiResponseDTO -> {
+                    if (apiResponseDTO != null && apiResponseDTO.getBody() != null && !apiResponseDTO.getBody().isEmpty()) {
+                        CopyDTO copyDTO = apiResponseDTO.getBody().get(0);
+                        return Mono.just(copyDTO);
                     } else {
                         return Mono.error(new RuntimeException("No book found in the response"));
                     }

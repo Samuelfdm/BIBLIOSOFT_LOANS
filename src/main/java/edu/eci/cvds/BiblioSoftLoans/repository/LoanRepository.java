@@ -18,7 +18,7 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByBookIdAndStudentIdAndLoanState(String bookId, String studentId, LoanState loanState);
     Loan findByCopyIdAndStudentIdAndLoanState(String copyId, String studentId, LoanState loanState);
 
-    @Query("SELECT new edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient(l.studentId, l.loanDate, lh.copyState) " +
+    @Query("SELECT new edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient(l.studentId, l.copyId, l.loanDate, lh.copyState) " +
             "FROM Loan l JOIN l.loanHistory lh WHERE l.studentId = :studentId")
     List<HistoryLoanStudient> findLoanHistoryByStudentId(String studentId);
 

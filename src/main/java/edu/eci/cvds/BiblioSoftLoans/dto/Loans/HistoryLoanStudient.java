@@ -12,12 +12,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class HistoryLoanStudient {
     private String studentId;
+    private String copyId;
     private LocalDate loanDate;
     private String loanState;
 
-    public HistoryLoanStudient(String studentId, LocalDate loanDate, String loanState) {
+
+    public HistoryLoanStudient(String studentId,String copyId, LocalDate loanDate, String loanState) {
         this.studentId = studentId;
         this.loanDate = loanDate;
         this.loanState = loanState;
+        this.copyId = copyId;
     }
 }
