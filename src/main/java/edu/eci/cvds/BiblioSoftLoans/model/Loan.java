@@ -23,6 +23,9 @@ public class Loan {
     @Column(name = "student_id", nullable = false)
     private String studentId; // ID del estudiante
 
+    @Column(name = "student_name", nullable = false)
+    private String studentName; // Nombre del estudiante
+
     @Column(name = "copy_id", nullable = false)
     private String copyId; // Código del ejemplar/copia
 
@@ -43,8 +46,9 @@ public class Loan {
     @JsonManagedReference
     private List<LoanHistory> loanHistory;
 
-    public Loan(String studentId, String copyId, String bookId, LocalDate loanDate, LocalDate maxReturnDate, LoanState loanState) {
+    public Loan(String studentId, String studentName, String copyId, String bookId, LocalDate loanDate, LocalDate maxReturnDate, LoanState loanState) {
         this.studentId = studentId;
+        this.studentName = studentName;
         this.copyId = copyId;
         this.bookId = bookId;
         this.loanDate = loanDate;

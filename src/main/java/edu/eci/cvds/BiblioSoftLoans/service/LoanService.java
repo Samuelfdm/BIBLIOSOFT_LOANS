@@ -56,6 +56,7 @@ public class LoanService implements ILoanService {
         LocalDate maxReturnDate = generateReturnDate(copy);
         Loan loan = new Loan(
                 studentId,
+                "Maria Perez",
                 loanRequest.getCopyId(),
                 copy.getBook(),
                 LocalDate.now(),

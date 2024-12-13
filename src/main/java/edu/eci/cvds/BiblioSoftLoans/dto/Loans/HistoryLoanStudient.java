@@ -11,14 +11,14 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 public class HistoryLoanStudient {
-    private String studentId;
+    private String studentName;
     private String copyId;
     private LocalDate loanDate;
     private String loanState;
 
 
-    public HistoryLoanStudient(String studentId,String copyId, LocalDate loanDate, String loanState) {
-        this.studentId = studentId;
+    public HistoryLoanStudient(String studentName,String copyId, LocalDate loanDate, String loanState) {
+        this.studentName = studentName;
         this.loanDate = loanDate;
         this.loanState = loanState;
         this.copyId = copyId;

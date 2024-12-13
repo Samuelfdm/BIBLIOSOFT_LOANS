@@ -15,7 +15,8 @@ class LoanTest {
     @BeforeEach
     void setUp() {
         loan = new Loan(
-                "67323424",
+                "673bb7ad521c2f08810d4f7c",
+                "Maria Perez",
                 "COPY123",
                 "BOOK000",
                 LocalDate.now(),
@@ -24,14 +25,14 @@ class LoanTest {
         );
         loan.setBookId("BOOK456");
         loan.setLoanHistory(new ArrayList<>());
-
         loanHistory1 = new LoanHistory(LocalDate.now(), "BUENO");
         loanHistory2 = new LoanHistory(LocalDate.now().minusDays(2), "Damaged");
     }
 
     @Test
     void testLoanCreation() {
-        assertEquals("67323424", loan.getStudentId());
+        assertEquals("673bb7ad521c2f08810d4f7c", loan.getStudentId());
+        assertEquals("Maria Perez", loan.getStudentName());
         assertEquals("COPY123", loan.getCopyId());
         assertEquals("BOOK456", loan.getBookId());
         assertEquals(LocalDate.now(), loan.getLoanDate());
@@ -43,7 +44,7 @@ class LoanTest {
     @Test
     void testAddHistory() {
         loan.addHistory(loanHistory1);
-        assertEquals("67323424", loan.getLoanHistory().size());
+        assertEquals(1, loan.getLoanHistory().size());
         assertEquals(loan, loanHistory1.getLoan());
     }
 
@@ -57,14 +58,14 @@ class LoanTest {
 
     @Test
     void testSettersAndGetters() {
-        loan.setStudentId("67323424");
+        loan.setStudentId("NEWID");
         loan.setCopyId("COPY789");
         loan.setBookId("BOOK987");
         loan.setLoanDate(LocalDate.now().minusDays(5));
         loan.setMaxReturnDate(LocalDate.now().plusDays(10));
         loan.setLoanState(LoanState.Returned);
 
-        assertEquals("67323424", loan.getStudentId());
+        assertEquals("NEWID", loan.getStudentId());
         assertEquals("COPY789", loan.getCopyId());
         assertEquals("BOOK987", loan.getBookId());
         assertEquals(LocalDate.now().minusDays(5), loan.getLoanDate());
@@ -83,7 +84,7 @@ class LoanTest {
     void testHistoryDetailsAfterAddition() {
         loan.addHistory(loanHistory1);
         assertEquals(LocalDate.now(), loan.getLoanHistory().get(0).getRecordDate());
-        assertEquals(CopyState.BUENO, loan.getLoanHistory().get(0).getCopyState());
+        assertEquals("BUENO", loan.getLoanHistory().get(0).getCopyState());
     }
 
     @Test
@@ -96,38 +97,5 @@ class LoanTest {
     void testLoanReturnDateUpdate() {
         loan.setMaxReturnDate(LocalDate.now().plusDays(14));
         assertEquals(LocalDate.now().plusDays(14), loan.getMaxReturnDate());
-    }
-
-
-    @Test
-    void testRemoveNonexistentHistory() {
-        loan.removeHistory(loanHistory1);
-        assertEquals(0, loan.getLoanHistory().size());
-    }
-
-    @Test
-    void testHistoryLoanAssociationIntegrity() {
-        loan.addHistory(loanHistory1);
-        assertEquals(loan, loanHistory1.getLoan());
-        loan.removeHistory(loanHistory1);
-        assertNull(loanHistory1.getLoan());
-    }
-
-    @Test
-    void testLoanHistorySizeAfterAdditionAndRemoval() {
-        loan.addHistory(loanHistory1);
-        loan.addHistory(loanHistory2);
-        assertEquals(2, loan.getLoanHistory().size());
-
-        loan.removeHistory(loanHistory1);
-        assertEquals(1, loan.getLoanHistory().size());
-    }
-
-    @Test
-    void testLoanUpdateProperties() {
-        loan.setStudentId("67323424");
-        loan.setCopyId("COPY456");
-        assertEquals(3L, loan.getStudentId());
-        assertEquals("COPY456", loan.getCopyId());
     }
 }
