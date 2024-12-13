@@ -1,11 +1,13 @@
 package edu.eci.cvds.BiblioSoftLoans.service;
 
 import edu.eci.cvds.BiblioSoftLoans.client.BookServiceClient;
+import edu.eci.cvds.BiblioSoftLoans.client.NotificationServiceClient;
 import edu.eci.cvds.BiblioSoftLoans.client.StudentServiceClient;
 import edu.eci.cvds.BiblioSoftLoans.dto.*;
 import edu.eci.cvds.BiblioSoftLoans.dto.Book.BookDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanBookDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanRequestDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanResponseDTO;
@@ -38,6 +40,9 @@ public class LoanService implements ILoanService {
     @Autowired
     private StudentServiceClient studentServiceClient;
 
+    @Autowired
+    private NotificationServiceClient notificationServiceClient;
+
     @Override
     @Transactional
     public LoanResponseDTO requestLoan(LoanRequestDTO loanRequest) {
@@ -57,6 +62,7 @@ public class LoanService implements ILoanService {
 
         LocalDate maxReturnDate = generateReturnDate(copy);
         String title = bookServiceClient.getTitlebyId(copy.getBook());
+
         Loan loan = new Loan(
                 studentId,
                 studientName,
@@ -69,7 +75,7 @@ public class LoanService implements ILoanService {
         );
 
         bookServiceClient.updateCopy(copy.getId(), CopyDTO.CopyDispo.BORROWED , copy.getState());
-
+        notificationServiceClient.notificationForLoan(loan);
 
         loanRepository.save(loan);
 
@@ -187,8 +193,8 @@ public class LoanService implements ILoanService {
         }
     }
 
-    public List<LoanHistory> getHistory(){
-        return LoanHistoryRepository.findAll();
+    public List<HistoryLoanDTO> getHistory(){
+        return loanRepository.findAllHistory();
     }
 
 

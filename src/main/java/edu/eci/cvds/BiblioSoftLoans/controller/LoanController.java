@@ -1,14 +1,13 @@
 package edu.eci.cvds.BiblioSoftLoans.controller;
 
 import edu.eci.cvds.BiblioSoftLoans.dto.*;
-import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Book.requestdisponibilityDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanBookDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanRequestDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.model.Loan;
-import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
 import edu.eci.cvds.BiblioSoftLoans.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +52,13 @@ public class LoanController implements ILoanController{
 
     //falta
     // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de un estudiante en especifico
+    @GetMapping("/getLoans/state")
+    public List<Loan> getLoansState( @RequestParam(value = "state") String state) {
+        return loanService.getLoans(state);
+    }
+
+    //falta
+    // Endpoint para obtener todos los prestamos de un estudiante en estado (Prestados, Vencidos o Devueltos) de un estudiante en especifico
     @GetMapping("/getLoans/state/{studentId}")
     public List<Loan> getLoansStudent(@PathVariable String studentId, @RequestParam(value = "state") String state) {
         return loanService.getLoansStudentState(studentId, state);
@@ -60,7 +66,7 @@ public class LoanController implements ILoanController{
 
     //end point para traer historial de todos los libros
     @GetMapping("/getHistory")
-    public List<LoanHistory> getHistory() {
+    public List<HistoryLoanDTO> getHistory() {
         return loanService.getHistory();
     }
 

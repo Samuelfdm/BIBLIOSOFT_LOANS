@@ -1,6 +1,7 @@
 package edu.eci.cvds.BiblioSoftLoans.repository;
 
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanBookDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient;
 import edu.eci.cvds.BiblioSoftLoans.model.Loan;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanState;
@@ -25,4 +26,9 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     @Query("SELECT new edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanBookDTO(l.nameBook,l.copyId, l.loanDate, lh.copyState) " +
             "FROM Loan l JOIN l.loanHistory lh WHERE l.copyId = :copyId")
     List<HistoryLoanBookDTO> findLoanHistoryByCopyId(String copyId);
+
+    @Query("SELECT new edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanDTO(l.nameBook, l.studentName, l.loanDate, lh.copyState) " +
+            "FROM Loan l JOIN l.loanHistory lh")
+    List<HistoryLoanDTO> findAllHistory();
+
 }
