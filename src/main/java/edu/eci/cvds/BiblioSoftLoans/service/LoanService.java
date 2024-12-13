@@ -81,7 +81,7 @@ public class LoanService implements ILoanService {
                 loan.getId(),
                 loan.getCopyId(),
                 loan.getBookId(),
-                loan.getStudentId(),
+                studentId,
                 loan.getLoanDate(),
                 loan.getMaxReturnDate(),
                 loan.getLoanState(),
