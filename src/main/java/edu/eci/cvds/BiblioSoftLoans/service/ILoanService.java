@@ -1,6 +1,8 @@
 package edu.eci.cvds.BiblioSoftLoans.service;
 
 import edu.eci.cvds.BiblioSoftLoans.dto.*;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanRequestDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.model.Loan;
 
 import java.util.List;
@@ -17,5 +19,8 @@ public interface ILoanService {
 
     List<Loan> getLoansStudent(Long studentId);
 
-    List<Loan> getLoansStudent(Long studentId, String state);
+
+    List<Loan> getLoansStudent(String studentId);
+
+    List<Loan> getLoansStudent(String studentId, String state);
 }

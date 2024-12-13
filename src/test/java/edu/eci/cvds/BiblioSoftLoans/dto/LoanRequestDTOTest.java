@@ -1,4 +1,5 @@
 package edu.eci.cvds.BiblioSoftLoans.dto;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanRequestDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,7 +8,7 @@ public class LoanRequestDTOTest {
 
     @Test
     public void testLoanRequestDTOSettersAndGetters() {
-        LoanRequestDTO loanRequest = new LoanRequestDTO(1L, "copy123");
+        LoanRequestDTO loanRequest = new LoanRequestDTO("67323424", "copy123","vmlmslkmv");
 
         assertEquals(Long.valueOf(1), loanRequest.getStudentId());
         assertEquals("copy123", loanRequest.getCopyId());
@@ -15,7 +16,7 @@ public class LoanRequestDTOTest {
 
     @Test
     public void testLoanRequestDTOConstructor() {
-        LoanRequestDTO loanRequest = new LoanRequestDTO(2L, "copy456");
+        LoanRequestDTO loanRequest = new LoanRequestDTO("67323424", "copy456","vmlmslkmv");
 
         assertNotNull(loanRequest);
         assertEquals(Long.valueOf(2), loanRequest.getStudentId());
@@ -24,23 +25,23 @@ public class LoanRequestDTOTest {
 
     @Test
     public void testLoanRequestDTOEquality() {
-        LoanRequestDTO loanRequest1 = new LoanRequestDTO(3L, "copy789");
-        LoanRequestDTO loanRequest2 = new LoanRequestDTO(3L, "copy789");
+        LoanRequestDTO loanRequest1 = new LoanRequestDTO("67323424", "copy789","vmlmslkmv");
+        LoanRequestDTO loanRequest2 = new LoanRequestDTO("67323424", "copy789","vmlmslkmv");
 
         assertEquals(loanRequest1, loanRequest2);
     }
 
     @Test
     public void testLoanRequestDTONotEqual() {
-        LoanRequestDTO loanRequest1 = new LoanRequestDTO(4L, "copy101");
-        LoanRequestDTO loanRequest2 = new LoanRequestDTO(5L, "copy102");
+        LoanRequestDTO loanRequest1 = new LoanRequestDTO("67323424", "copy101","vmlmslkmv");
+        LoanRequestDTO loanRequest2 = new LoanRequestDTO("67323424", "copy102","vmlmslkmv");
 
         assertNotEquals(loanRequest1, loanRequest2);
     }
 
     @Test
     public void testLoanRequestDTOConstructorWithNull() {
-        LoanRequestDTO loanRequest = new LoanRequestDTO(null, null);
+        LoanRequestDTO loanRequest = new LoanRequestDTO(null, null,null);
 
         assertNull(loanRequest.getStudentId());
         assertNull(loanRequest.getCopyId());
@@ -48,15 +49,15 @@ public class LoanRequestDTOTest {
 
     @Test
     public void testLoanRequestDTOHashCode() {
-        LoanRequestDTO loanRequest1 = new LoanRequestDTO(6L, "copy103");
-        LoanRequestDTO loanRequest2 = new LoanRequestDTO(6L, "copy103");
+        LoanRequestDTO loanRequest1 = new LoanRequestDTO("67323424", "copy103","vmlmslkmv");
+        LoanRequestDTO loanRequest2 = new LoanRequestDTO("67323424", "copy103","vmlmslkmv");
 
         assertEquals(loanRequest1.hashCode(), loanRequest2.hashCode());
     }
 
     @Test
     public void testLoanRequestDTOToString() {
-        LoanRequestDTO loanRequest = new LoanRequestDTO(7L, "copy104");
+        LoanRequestDTO loanRequest = new LoanRequestDTO("67323424", "copy104","vmlmslkmv");
 
         String loanRequestString = loanRequest.toString();
 

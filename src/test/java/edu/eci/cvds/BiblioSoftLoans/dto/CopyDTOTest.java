@@ -1,6 +1,8 @@
 package edu.eci.cvds.BiblioSoftLoans.dto;
-import org.junit.jupiter.api.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyDTO;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CopyDTOTest {
@@ -9,18 +11,20 @@ public class CopyDTOTest {
     public void testCopyDTOSettersAndGetters() {
         CopyDTO copy = new CopyDTO();
         copy.setId("copy123");
-        copy.setBookId("book456");
+        copy.setBook("book456");
         copy.setBarCode("barcode789");
         copy.setState("GOOD");
-        copy.setDisponibility("AVAILABLE");
-        copy.setCategory("LITERATURE");
+        copy.setDisponibility(CopyDTO.CopyDispo.AVAILABLE);
+        copy.setUbication("A1");
+        copy.setActive(true);
 
         assertEquals("copy123", copy.getId());
-        assertEquals("book456", copy.getBookId());
+        assertEquals("book456", copy.getBook());
         assertEquals("barcode789", copy.getBarCode());
         assertEquals("GOOD", copy.getState());
-        assertEquals("AVAILABLE", copy.getDisponibility());
-        assertEquals("LITERATURE", copy.getCategory());
+        assertEquals(CopyDTO.CopyDispo.AVAILABLE, copy.getDisponibility());
+        assertEquals("A1", copy.getUbication());
+        assertTrue(copy.isActive());
     }
 
     @Test
@@ -28,70 +32,71 @@ public class CopyDTOTest {
         CopyDTO copy = new CopyDTO();
 
         assertNull(copy.getId());
-        assertNull(copy.getBookId());
+        assertNull(copy.getBook());
         assertNull(copy.getBarCode());
         assertNull(copy.getState());
         assertNull(copy.getDisponibility());
-        assertNull(copy.getCategory());
+        assertNull(copy.getUbication());
+        assertFalse(copy.isActive());
     }
 
     @Test
     public void testCopyDTOConstructorWithValues() {
-        CopyDTO copy = new CopyDTO();
-        copy.setId("copy123");
-        copy.setBookId("book456");
-        copy.setBarCode("barcode789");
-        copy.setState("MODERATE");
-        copy.setDisponibility("LOANED");
-        copy.setCategory("SCIENCE");
+        CopyDTO copy = new CopyDTO("copy123", "book456", "GOOD", "barcode789",
+                "A1", CopyDTO.CopyDispo.BORROWED, true);
 
-        assertNotNull(copy);
         assertEquals("copy123", copy.getId());
-        assertEquals("book456", copy.getBookId());
+        assertEquals("book456", copy.getBook());
         assertEquals("barcode789", copy.getBarCode());
-        assertEquals("MODERATE", copy.getState());
-        assertEquals("LOANED", copy.getDisponibility());
-        assertEquals("SCIENCE", copy.getCategory());
+        assertEquals("GOOD", copy.getState());
+        assertEquals(CopyDTO.CopyDispo.BORROWED, copy.getDisponibility());
+        assertEquals("A1", copy.getUbication());
+        assertTrue(copy.isActive());
     }
 
     @Test
     public void testCopyDTOToString() {
-        CopyDTO copy = new CopyDTO();
-        copy.setId("copy123");
-        copy.setBookId("book456");
-        copy.setBarCode("barcode789");
-        copy.setState("DAMAGED");
-        copy.setDisponibility("AVAILABLE");
-        copy.setCategory("HISTORY");
+        CopyDTO copy = new CopyDTO("copy123", "book456", "DAMAGED", "barcode789",
+                "A3", CopyDTO.CopyDispo.AVAILABLE, true);
 
         String copyString = copy.toString();
 
         assertTrue(copyString.contains("id=copy123"));
-        assertTrue(copyString.contains("bookId=book456"));
+        assertTrue(copyString.contains("book=book456"));
         assertTrue(copyString.contains("barCode=barcode789"));
         assertTrue(copyString.contains("state=DAMAGED"));
         assertTrue(copyString.contains("disponibility=AVAILABLE"));
-        assertTrue(copyString.contains("category=HISTORY"));
+        assertTrue(copyString.contains("ubication=A3"));
+        assertTrue(copyString.contains("active=true"));
     }
 
     @Test
-    public void testCopyDTOEquality() {
-        CopyDTO copy1 = new CopyDTO();
-        copy1.setId("copy123");
-        copy1.setBookId("book456");
-        copy1.setBarCode("barcode789");
-        copy1.setState("DAMAGED");
-        copy1.setDisponibility("AVAILABLE");
-        copy1.setCategory("HISTORY");
+    public void testCopyDTOEqualityAndHashCode() {
+        CopyDTO copy1 = new CopyDTO("copy123", "book456", "DAMAGED", "barcode789",
+                "A1", CopyDTO.CopyDispo.AVAILABLE, true);
 
-        CopyDTO copy2 = new CopyDTO();
-        copy2.setId("copy123");
-        copy2.setBookId("book456");
-        copy2.setBarCode("barcode789");
-        copy2.setState("DAMAGED");
-        copy2.setDisponibility("AVAILABLE");
-        copy2.setCategory("HISTORY");
+        CopyDTO copy2 = new CopyDTO("copy123", "book456", "DAMAGED", "barcode789",
+                "A1", CopyDTO.CopyDispo.AVAILABLE, true);
 
         assertEquals(copy1, copy2);
+        assertEquals(copy1.hashCode(), copy2.hashCode());
+
+        copy2.setUbication("B1");
+        assertNotEquals(copy1, copy2);
+        assertNotEquals(copy1.hashCode(), copy2.hashCode());
+    }
+
+    @Test
+    public void testCopyDTOJsonSerialization() throws Exception {
+        // Usar una librería como Jackson para probar la serialización/deserialización
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        CopyDTO copy = new CopyDTO("copy123", "book456", "GOOD", "barcode789",
+                "A1", CopyDTO.CopyDispo.BORROWED, true);
+
+        String json = objectMapper.writeValueAsString(copy);
+        CopyDTO deserializedCopy = objectMapper.readValue(json, CopyDTO.class);
+
+        assertEquals(copy, deserializedCopy);
     }
 }
