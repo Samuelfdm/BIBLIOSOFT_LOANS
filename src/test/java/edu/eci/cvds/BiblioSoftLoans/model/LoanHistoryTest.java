@@ -17,6 +17,7 @@ class LoanHistoryTest {
                 "Maria Perez",
                 "COPY123",
                 "BOOK000",
+                "libro de la selva",
                 LocalDate.now(),
                 LocalDate.now().plusDays(7),
                 LoanState.Loaned
@@ -52,6 +53,7 @@ class LoanHistoryTest {
                 "Maria Perez",
                 "COPY789",
                 "BOOK001",
+                "libro de la selva",
                 LocalDate.now(),
                 LocalDate.now().plusDays(10),
                 LoanState.Loaned
@@ -85,6 +87,7 @@ class LoanHistoryTest {
                 "Maria Perez",
                 "COPY999",
                 "BOOK002",
+                "libro de la selva",
                 LocalDate.now(),
                 LocalDate.now().plusDays(5),
                 LoanState.Loaned
@@ -123,6 +126,7 @@ class LoanHistoryTest {
                 "Maria Perez",
                 "COPY555",
                 "BOOK003",
+                "libro de la selva",
                 LocalDate.now(),
                 LocalDate.now().plusDays(7),
                 LoanState.Loaned

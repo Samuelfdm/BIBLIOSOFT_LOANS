@@ -39,20 +39,13 @@ public class LoanController implements ILoanController{
         return ResponseEntity.ok(response);
     }
 
-    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos y Devueltos) de TODOS los estudiantes
+    // Endpoint para obtener todos los prestamos
     @GetMapping("/getLoans")
     public List<Loan> getLoans() {
         return loanService.getLoans();
     }
 
-    //falta
-    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos o Devueltos) de TODOS los estudiantes
-    @GetMapping("/getLoans/state")
-    public List<Loan> getLoans(@RequestParam(value = "state") String state) {
-        return loanService.getLoans(state);
-    }
-
-    // Endpoint para obtener todos los prestamos en estado (Prestados, Vencidos y Devueltos) de un estudiante en especifico
+    // Endpoint para obtener todos los prestamos  de un estudiante en especifico
     @GetMapping("/getLoans/{studentId}")
     public List<Loan> getLoansStudent(@PathVariable String studentId) {
         return loanService.getLoansStudent(studentId);
@@ -65,22 +58,25 @@ public class LoanController implements ILoanController{
         return loanService.getLoansStudentState(studentId, state);
     }
 
+    //end point para traer historial de todos los libros
     @GetMapping("/getHistory")
     public List<LoanHistory> getHistory() {
         return loanService.getHistory();
     }
 
-
+    //end point para traer historial de un estudiante
     @GetMapping("/getHistoryStudient/{studentId}")
     public List<HistoryLoanStudient> getHistoryStudient(@PathVariable String studentId) {
         return loanService.getHistoryStudient(studentId);
     }
 
+    //end point para traer historial de una copia
     @GetMapping("/getHistorybook/{copyId}")
     public List<HistoryLoanBookDTO> getHistoryCopy(@PathVariable String copyId) {
         return loanService.getHistoryCopy(copyId);
     }
 
+    //end point para buscar disponibilida de un libro por titulo
     @PostMapping("/getDisponibilitybyTitle")
     public List<String> getDisponibilitybyTitle(@RequestBody requestdisponibilityDTO request) {
         if (request.getTitle() != null && !request.getTitle().isEmpty()) {
@@ -90,7 +86,7 @@ public class LoanController implements ILoanController{
         }
     }
 
-
+    //end point para buscar disponibilida de un libro por autor
     @PostMapping("/getDisponibilitybyAuthor")
     public List<String> getDisponibilitybyAuthor(@RequestBody requestdisponibilityDTO request) {
         if (request.getAuthor() != null && !request.getAuthor().isEmpty()) {
@@ -100,10 +96,16 @@ public class LoanController implements ILoanController{
         }
     }
 
+    //end point para traer todos los prestamos activos
     @GetMapping("/getActiveloans")
     public List<Loan> getActiveLoan() {
         return loanService.getActiveLoan();
     }
 
+    //end point para traer todos los prestamos activos de un estudiante
+    @GetMapping("/getActiveloans/{studentId}")
+    public List<Loan> getActiveLoan(@PathVariable String studentId) {
+        return loanService.getActiveLoanbyStudient(studentId);
+    }
 
 }

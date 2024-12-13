@@ -158,6 +158,10 @@ public class BookServiceClient {
     }
 
 
+    //trae el titulo del libro por id
+    public String getTitlebyId(String bookId){
+        return getBookById(bookId).block().getTitle();
+    }
 
     public Mono<CopyDTO> getCopiesBycodebar(String code) {
         return getBodyCopiesBycodebar(code)

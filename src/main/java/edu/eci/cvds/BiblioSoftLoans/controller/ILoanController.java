@@ -17,8 +17,6 @@ public interface ILoanController {
 
     List<Loan> getLoans();
 
-    List<Loan> getLoans(String state);
-
     List<Loan> getLoansStudent(String studentId);
 
     List<Loan> getLoansStudent(String studentId, String state);

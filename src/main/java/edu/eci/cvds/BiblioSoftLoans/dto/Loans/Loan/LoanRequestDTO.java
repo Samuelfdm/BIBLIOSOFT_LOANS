@@ -1,17 +1,15 @@
 package edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
 
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Data
+@NoArgsConstructor
 public class LoanRequestDTO {
     private String studentId;
     private String copyId;
+    private String token;
 }

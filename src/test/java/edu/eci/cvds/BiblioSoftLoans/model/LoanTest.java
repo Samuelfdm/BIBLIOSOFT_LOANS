@@ -19,6 +19,7 @@ class LoanTest {
                 "Maria Perez",
                 "COPY123",
                 "BOOK000",
+                "libro de la selva",
                 LocalDate.now(),
                 LocalDate.now().plusDays(7),
                 LoanState.Loaned

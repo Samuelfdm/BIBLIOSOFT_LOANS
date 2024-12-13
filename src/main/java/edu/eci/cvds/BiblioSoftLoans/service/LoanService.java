@@ -41,6 +41,8 @@ public class LoanService implements ILoanService {
     @Override
     @Transactional
     public LoanResponseDTO requestLoan(LoanRequestDTO loanRequest) {
+
+        String studientName = studentServiceClient.getStudentById(loanRequest.getStudentId(),loanRequest.getToken()).block();
         String studentId = loanRequest.getStudentId();
         CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
 
@@ -54,11 +56,13 @@ public class LoanService implements ILoanService {
         }
 
         LocalDate maxReturnDate = generateReturnDate(copy);
+        String title = bookServiceClient.getTitlebyId(copy.getBook());
         Loan loan = new Loan(
                 studentId,
-                "Maria Perez",
+                studientName,
                 loanRequest.getCopyId(),
                 copy.getBook(),
+                title,
                 LocalDate.now(),
                 maxReturnDate,
                 LoanState.Loaned
@@ -233,6 +237,10 @@ public class LoanService implements ILoanService {
 
     public List<Loan> getActiveLoan(){
         return loanRepository.findByLoanState(LoanState.Loaned);
+    }
+
+    public List<Loan> getActiveLoanbyStudient(String studientId){
+        return loanRepository.findByStudentIdAndLoanState(studientId,LoanState.Loaned);
     }
 
 

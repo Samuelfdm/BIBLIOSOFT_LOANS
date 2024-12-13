@@ -1,6 +1,5 @@
 package edu.eci.cvds.BiblioSoftLoans.dto.Loans;
 
-import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +11,13 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 public class HistoryLoanBookDTO {
+    private String nameBook;
     private String copyId;
     private LocalDate loanDate;
     private String loanState;
 
-    public HistoryLoanBookDTO(String copyId, LocalDate loanDate, String loanState) {
+    public HistoryLoanBookDTO(String nameBook, String copyId, LocalDate loanDate, String loanState) {
+        this.nameBook = nameBook;
         this.copyId = copyId;
         this.loanDate = loanDate;
         this.loanState = loanState;
