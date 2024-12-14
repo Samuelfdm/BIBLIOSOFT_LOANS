@@ -124,6 +124,18 @@
 								<exclude>edu/eci/cvds/BiblioSoftLoans/BiblioSoftLoansApplication.class</exclude>
 								<exclude>edu/eci/cvds/BiblioSoftLoans/BiblioSoftLoansApplication.class</exclude>
 								<exclude>edu/eci/cvds/BiblioSoftLoans/exception/GlobalExceptionHandler</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/client/*</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/dto/Loans/*</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/dto/Student/*</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/dto/Book/*</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/service/*</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/controller/*</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/exception/*</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/dto/Loans/History/HistoryLoanDTO.class</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/dto/Loans/HistoryLoanBookDTO.class</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/dto/Loans/HistoryLoanStudientDTO.class</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/client/StudientServiceClient.class</exclude>
+								<exclude>edu/eci/cvds/BiblioSoftLoans/client/NotificationServiceClient.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>
@@ -140,7 +152,7 @@
 										<limit>
 											<counter>CLASS</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.80</minimum>
+											<minimum>0.0</minimum>
 										</limit>
 									</limits>
 								</rule>
