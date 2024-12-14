@@ -1,7 +1,6 @@
-package edu.eci.cvds.BiblioSoftLoans.dto;
+package edu.eci.cvds.BiblioSoftLoans.dto.Book;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyDTO;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

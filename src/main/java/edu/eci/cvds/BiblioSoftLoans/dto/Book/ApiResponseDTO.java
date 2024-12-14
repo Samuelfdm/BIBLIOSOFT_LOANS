@@ -1,7 +1,7 @@
 package edu.eci.cvds.BiblioSoftLoans.dto.Book;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-
 import java.util.List;
 
 @Data

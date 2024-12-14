@@ -176,7 +176,7 @@ public class BookServiceClient {
 
     // Actualizar disponibilidad de un ejemplar
     public void updateCopy(String copyId, CopyDTO.CopyDispo copyDispo, String state) {
-        CopyUpdateDTO update = new CopyUpdateDTO(copyId, copyDispo, state);
+        CopyUpdateDTO update = new CopyUpdateDTO(copyId, state, copyDispo);
 
         try {
             webClient.patch()
@@ -190,5 +190,4 @@ public class BookServiceClient {
             throw new BookApiException(BookApiException.ErrorType.UPDATE_FAILED, e);
         }
     }
-
 }

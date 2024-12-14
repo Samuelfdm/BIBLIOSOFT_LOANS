@@ -132,4 +132,70 @@ class LoanControllerTest {
 
         assertEquals("El título no puede estar vacío.", exception.getMessage());
     }
+
+    @Test
+    void testGetDisponibilityByAuthor() {
+        RequestDisponibilityDTO request = new RequestDisponibilityDTO();
+        request.setAuthor("Author Name");
+        List<String> disponibility = Arrays.asList("Copy1", "Copy2");
+        when(loanService.getDisponibilityByAuthor(request.getAuthor())).thenReturn(disponibility);
+
+        List<String> result = loanController.getDisponibilityByAuthor(request);
+
+        assertNotNull(result);
+        assertEquals(disponibility.size(), result.size());
+        verify(loanService, times(1)).getDisponibilityByAuthor(request.getAuthor());
+    }
+
+    @Test
+    void testGetDisponibilityByAuthor_EmptyAuthor() {
+        RequestDisponibilityDTO request = new RequestDisponibilityDTO();
+        request.setAuthor("");
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            loanController.getDisponibilityByAuthor(request);
+        });
+
+        assertEquals("El autor no puede estar vacío.", exception.getMessage());
+    }
+
+    @Test
+    void testGetLoansStudentWithState() {
+        String studentId = "12345";
+        String state = "Loaned";
+        List<Loan> loans = Arrays.asList(new Loan());
+        when(loanService.getLoansStudent(studentId, state)).thenReturn(loans);
+
+        List<Loan> result = loanController.getLoansStudent(studentId, state);
+
+        assertNotNull(result);
+        assertEquals(loans.size(), result.size());
+        verify(loanService, times(1)).getLoansStudent(studentId, state);
+    }
+
+    @Test
+    void testGetHistoryByStudent() {
+        String studentId = "12345";
+        List<HistoryLoanStudentDTO> history = Arrays.asList(new HistoryLoanStudentDTO());
+        when(loanService.getHistoryByStudent(studentId)).thenReturn(history);
+
+        List<HistoryLoanStudentDTO> result = loanController.getHistoryByStudent(studentId);
+
+        assertNotNull(result);
+        assertEquals(history.size(), result.size());
+        verify(loanService, times(1)).getHistoryByStudent(studentId);
+    }
+
+    @Test
+    void testGetHistoryByCopy() {
+        String copyId = "copy123";
+        List<HistoryLoanBookDTO> history = Arrays.asList(new HistoryLoanBookDTO());
+        when(loanService.getHistoryByCopy(copyId)).thenReturn(history);
+
+        List<HistoryLoanBookDTO> result = loanController.getHistoryByCopy(copyId);
+
+        assertNotNull(result);
+        assertEquals(history.size(), result.size());
+        verify(loanService, times(1)).getHistoryByCopy(copyId);
+    }
 }

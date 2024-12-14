@@ -1,5 +1,6 @@
 package edu.eci.cvds.BiblioSoftLoans.dto.Book;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 @Data
+@AllArgsConstructor
 public class BookDTO {
 
     private String bookId;
@@ -23,23 +25,6 @@ public class BookDTO {
     private List<String> categories;
     private List<String> subcategories;
 
-    // Constructor
-    public BookDTO(String bookId, String title, String author, String description, String collection,
-                   String editorial, String edition, String recommendedAges, String language,
-                   String isbn, String imgPath, List<String> categories, List<String> subcategories) {
-        this.bookId = bookId;
-        this.title = title;
-        this.author = author;
-        this.description = description;
-        this.collection = collection;
-        this.editorial = editorial;
-        this.edition = edition;
-        this.recommendedAges = recommendedAges;
-        this.language = language;
-        this.isbn = isbn;
-        this.imgPath = imgPath;
-        this.categories = categories;
-        this.subcategories = subcategories;
+    public BookDTO() {
     }
-
 }

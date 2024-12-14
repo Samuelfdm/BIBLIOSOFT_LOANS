@@ -1,5 +1,8 @@
 package edu.eci.cvds.BiblioSoftLoans.exception;
 
+import lombok.Getter;
+
+@Getter
 public class NotificationException extends RuntimeException {
 
   private final String userMessage;
@@ -46,21 +49,9 @@ public class NotificationException extends RuntimeException {
     }
   }
 
-  public String getUserMessage() {
-    return userMessage;
-  }
-
-  public String getDeveloperMessage() {
-    return developerMessage;
-  }
-
-  public ErrorType getErrorType() {
-    return errorType;
-  }
-
-  public enum ErrorType {
+    public enum ErrorType {
     CONNECTION_FAILED,
     INVALID_NOTIFICATION_DATA,
-    NOTIFICATION_SERVICE_ERROR
+    INVALID_MESSAGE, NOTIFICATION_SERVICE_ERROR
   }
 }

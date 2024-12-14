@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @Data
-public class RequestDisponibilityDTO {
-        private String title;
-        private String author;
+public class RequestDisponibilityDTO{
+    private String title;
+    private String author;
 
-        public RequestDisponibilityDTO() {
-        }
+    public RequestDisponibilityDTO(){
+    }
 }

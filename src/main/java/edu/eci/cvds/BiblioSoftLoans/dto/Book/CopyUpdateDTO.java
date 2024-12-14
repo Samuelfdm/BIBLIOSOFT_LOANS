@@ -1,15 +1,13 @@
 package edu.eci.cvds.BiblioSoftLoans.dto.Book;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CopyUpdateDTO {
 
     @JsonProperty("id")
@@ -20,11 +18,4 @@ public class CopyUpdateDTO {
 
     @JsonProperty("disponibility")
     private CopyDTO.CopyDispo disponibility;
-
-    // Constructor con parámetros
-    public CopyUpdateDTO(String copyId, CopyDTO.CopyDispo copyDispo, String state) {
-        this.id = copyId;
-        this.disponibility = copyDispo;
-        this.state = state;
-    }
 }

@@ -1,20 +1,13 @@
 package edu.eci.cvds.BiblioSoftLoans.dto.Student;
 
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class ReturnStudentDTO {
     private String fullName;
-
-    public ReturnStudentDTO(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public ReturnStudentDTO() {
-    }
 }

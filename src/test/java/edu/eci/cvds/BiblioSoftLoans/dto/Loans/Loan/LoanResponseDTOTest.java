@@ -1,6 +1,5 @@
-package edu.eci.cvds.BiblioSoftLoans.dto;
+package edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan;
 
-import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanState;
 import org.junit.jupiter.api.Test;
 
