@@ -8,7 +8,7 @@ public class ReturnResponseDTOTest {
 
     @Test
     public void testReturnResponseDTO() {
-        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, LocalDate.now(), "BUENO");
+        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, LocalDate.now(), "123", "BUENO");
 
         assertNotNull(returnResponse);
         assertEquals(Long.valueOf(1), returnResponse.getLoanId());
@@ -18,7 +18,7 @@ public class ReturnResponseDTOTest {
 
     @Test
     public void testReturnResponseDTOWithDamagedCopyState() {
-        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, LocalDate.now(), "DAÑADO");
+        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, LocalDate.now(), "123", "DAÑADO");
 
         assertNotNull(returnResponse);
         assertEquals("DAÑADO", returnResponse.getFinalCopyState());  // Usando String
@@ -26,7 +26,7 @@ public class ReturnResponseDTOTest {
 
     @Test
     public void testReturnResponseDTOWithModerateCopyState() {
-        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, LocalDate.now(), "MODERADO");
+        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, LocalDate.now(), "123", "MODERADO");
 
         assertNotNull(returnResponse);
         assertEquals("MODERADO", returnResponse.getFinalCopyState());  // Usando String
@@ -34,7 +34,7 @@ public class ReturnResponseDTOTest {
 
     @Test
     public void testReturnResponseDTOWithNullCopyState() {
-        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, LocalDate.now(), null);
+        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, LocalDate.now(), "123", null);
 
         assertNotNull(returnResponse);
         assertNull(returnResponse.getFinalCopyState());
@@ -42,7 +42,7 @@ public class ReturnResponseDTOTest {
 
     @Test
     public void testReturnResponseDTOWithNullLoanId() {
-        ReturnResponseDTO returnResponse = new ReturnResponseDTO(null, LocalDate.now(), "BUENO");
+        ReturnResponseDTO returnResponse = new ReturnResponseDTO(null, LocalDate.now(), "123", "BUENO");
 
         assertNotNull(returnResponse);
         assertNull(returnResponse.getLoanId());
@@ -50,7 +50,7 @@ public class ReturnResponseDTOTest {
 
     @Test
     public void testReturnResponseDTOWithNullReturnDate() {
-        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, null, "BUENO");
+        ReturnResponseDTO returnResponse = new ReturnResponseDTO(1L, null, "123", "BUENO");
 
         assertNotNull(returnResponse);
         assertNull(returnResponse.getReturnDate());
@@ -58,7 +58,7 @@ public class ReturnResponseDTOTest {
 
     @Test
     public void testReturnResponseDTOWithAllNullValues() {
-        ReturnResponseDTO returnResponse = new ReturnResponseDTO(null, null, null);
+        ReturnResponseDTO returnResponse = new ReturnResponseDTO(null, null, null,null);
 
         assertNotNull(returnResponse);
         assertNull(returnResponse.getLoanId());
@@ -69,7 +69,7 @@ public class ReturnResponseDTOTest {
     @Test
     public void testReturnResponseDTOWithValidFields() {
         LocalDate returnDate = LocalDate.of(2024, 11, 14);
-        ReturnResponseDTO returnResponse = new ReturnResponseDTO(6L, returnDate, "BUENO");
+        ReturnResponseDTO returnResponse = new ReturnResponseDTO(6L, returnDate, "123","BUENO");
 
         assertNotNull(returnResponse);
         assertEquals(Long.valueOf(6), returnResponse.getLoanId());

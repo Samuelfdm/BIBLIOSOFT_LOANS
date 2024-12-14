@@ -1,4 +1,4 @@
-package edu.eci.cvds.BiblioSoftLoans.dto.Studient;
+package edu.eci.cvds.BiblioSoftLoans.dto.Student;
 
 
 import lombok.Data;
@@ -8,13 +8,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
-public class ReturnStudientDTO  {
+public class ReturnStudentDTO {
     private String fullName;
 
-    public ReturnStudientDTO( String fullName) {
+    public ReturnStudentDTO(String fullName) {
         this.fullName = fullName;
     }
 
-    public ReturnStudientDTO() {
+    public ReturnStudentDTO() {
     }
 }

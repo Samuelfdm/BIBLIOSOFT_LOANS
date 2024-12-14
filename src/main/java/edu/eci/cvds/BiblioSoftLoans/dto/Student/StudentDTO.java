@@ -1,4 +1,4 @@
-package edu.eci.cvds.BiblioSoftLoans.dto.Studient;
+package edu.eci.cvds.BiblioSoftLoans.dto.Student;
 
 import lombok.Data;
 import lombok.Getter;

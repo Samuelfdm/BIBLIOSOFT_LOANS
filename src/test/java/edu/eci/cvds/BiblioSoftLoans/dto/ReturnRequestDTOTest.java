@@ -10,7 +10,7 @@ public class ReturnRequestDTOTest {
         ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy101", "BUENO");  // Usando String
 
         assertNotNull(returnRequest);
-        assertEquals(Long.valueOf(1), returnRequest.getStudentId());
+        assertEquals("67323424", returnRequest.getStudentId());
         assertEquals("copy101", returnRequest.getCopyId());
         assertEquals("BUENO", returnRequest.getFinalCopyState());
     }
@@ -78,7 +78,7 @@ public class ReturnRequestDTOTest {
         ReturnRequestDTO returnRequest = new ReturnRequestDTO("67323424", "copy108", "BUENO");  // Usando String
 
         assertNotNull(returnRequest);
-        assertEquals(Long.valueOf(8), returnRequest.getStudentId());
+        assertEquals("67323424", returnRequest.getStudentId());
         assertEquals("copy108", returnRequest.getCopyId());
         assertEquals("BUENO", returnRequest.getFinalCopyState());
     }
