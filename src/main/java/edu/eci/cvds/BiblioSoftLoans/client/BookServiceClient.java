@@ -5,7 +5,6 @@ import edu.eci.cvds.BiblioSoftLoans.dto.Book.BookDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyUpdateDTO;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookApiException;
-import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;

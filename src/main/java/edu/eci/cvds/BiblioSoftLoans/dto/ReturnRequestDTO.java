@@ -1,13 +1,14 @@
 package edu.eci.cvds.BiblioSoftLoans.dto;
 
-import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Data
+@NoArgsConstructor
 public class ReturnRequestDTO {
     //Información para buscar el prestamo a devolver
     private String studentId; // ID del usuario que devuelve el libro
