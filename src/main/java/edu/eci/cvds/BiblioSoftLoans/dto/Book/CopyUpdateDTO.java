@@ -1,7 +1,6 @@
 package edu.eci.cvds.BiblioSoftLoans.dto.Book;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.eci.cvds.BiblioSoftLoans.model.CopyState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;

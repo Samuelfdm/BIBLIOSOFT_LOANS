@@ -13,6 +13,7 @@ import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanRequestDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookApiException;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookLoanException;
+import edu.eci.cvds.BiblioSoftLoans.exception.StudentException;
 import edu.eci.cvds.BiblioSoftLoans.model.Loan;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanState;
@@ -47,11 +48,16 @@ public class LoanService implements ILoanService {
     @Transactional
     public LoanResponseDTO requestLoan(LoanRequestDTO loanRequest) {
 
-        String studentName = studentServiceClient.getStudentById(loanRequest.getStudentId(),loanRequest.getToken()).block();
         String studentId = loanRequest.getStudentId();
+        String studentName = studentServiceClient.getStudentById(studentId,loanRequest.getToken()).block();
+
+        if (studentName == null) {
+            throw new StudentException(StudentException.ErrorType.STUDENT_NOT_FOUND);
+        }
+
         CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
 
-        if (copy == null || checkStudentHasBook(studentId, copy.getBook())) {
+        if (copy == null || checkStudentHasBook(studentId, copy.getBookId())) {
             throw new BookLoanException(BookLoanException.ErrorType.ALREADY_BORROWED);
         }
 
@@ -60,27 +66,26 @@ public class LoanService implements ILoanService {
         }
 
         LocalDate maxReturnDate = generateReturnDate(copy);
-        String title = bookServiceClient.getTitlebyId(copy.getBook());
+        String title = bookServiceClient.getTitlebyId(copy.getBookId());
 
         Loan loan = new Loan(
                 studentId,
                 studentName,
                 loanRequest.getCopyId(),
-                copy.getBook(),
+                copy.getBookId(),
                 title,
                 LocalDate.now(),
                 maxReturnDate,
                 LoanState.Loaned
         );
 
-        bookServiceClient.updateCopy(copy.getId(), CopyDTO.CopyDispo.BORROWED , copy.getState());
-        //notificationServiceClient.notificationForLoan(loan);
-
-        loanRepository.save(loan);
-
         String initialCopyState = copy.getState();
         LoanHistory loanHistory = updateHistory(initialCopyState,loan);
+        loan.addHistory(loanHistory);
+        loanRepository.save(loan);
 
+        bookServiceClient.updateCopy(copy.getId(), CopyDTO.CopyDispo.BORROWED , copy.getState());
+        //notificationServiceClient.notificationForLoan(loan);
 
         return new LoanResponseDTO(
                 loan.getId(),
@@ -113,6 +118,7 @@ public class LoanService implements ILoanService {
         return new ReturnResponseDTO(
                 loan.getId(),
                 loanHistory.getRecordDate(),
+                returnRequest.getCopyId(),
                 finalCopyState
         );
     }
@@ -152,10 +158,12 @@ public class LoanService implements ILoanService {
 
     public LocalDate generateReturnDate(CopyDTO copyRequest) {
         LocalDate loanDate = LocalDate.now();
-        String bookId = copyRequest.getBook();
+        String bookId = copyRequest.getBookId();
         BookDTO book = bookServiceClient.getBookById(bookId).block();
+        if (book == null) {
+            throw new BookApiException(BookApiException.ErrorType.DATA_NOT_FOUND);
+        }
         String bookCategory = book.getBookId();
-
         int daysToAdd;
         try {
             daysToAdd = switch (bookCategory) {
@@ -186,30 +194,25 @@ public class LoanService implements ILoanService {
         return loanRepository.findAllHistory();
     }
 
-    public List<HistoryLoanStudentDTO> getHistoryStudient(String studentId){
+    public List<HistoryLoanStudentDTO> getHistoryByStudent(String studentId){
         return loanRepository.findLoanHistoryByStudentId(studentId);
     }
 
-    public List<HistoryLoanBookDTO> getHistoryCopy(String copyId){
+    public List<HistoryLoanBookDTO> getHistoryByCopy(String copyId){
         return loanRepository.findLoanHistoryByCopyId(copyId);
     }
 
-    public List<String> getDisponibilitybyTitle(String title) {
+    public List<String> getDisponibilityByTitle(String title) {
         List<CopyDTO> copies = bookServiceClient.getCopiesByTitle(title).block();
-        List<String> availableCopiesMessage = new ArrayList<>();
-
-        if (copies != null) {
-            for (CopyDTO copy : copies) {
-                if ("AVAILABLE".equalsIgnoreCase(String.valueOf(copy.getDisponibility()))) {
-                    availableCopiesMessage.add(copy.getId());
-                }
-            }
-        }
-        return availableCopiesMessage;
+        return getStrings(copies);
     }
 
-    public List<String> getDisponibilitybyAuthor(String author) {
+    public List<String> getDisponibilityByAuthor(String author) {
         List<CopyDTO> copies = bookServiceClient.getCopiesByAuthor(author).block();
+        return getStrings(copies);
+    }
+
+    private List<String> getStrings(List<CopyDTO> copies) {
         List<String> availableCopiesMessage = new ArrayList<>();
 
         if (copies != null) {
@@ -218,12 +221,21 @@ public class LoanService implements ILoanService {
                     availableCopiesMessage.add(copy.getId());
                 }
             }
+        } else {
+            throw new BookApiException(BookApiException.ErrorType.DATA_NOT_FOUND);
         }
+
         return availableCopiesMessage;
     }
 
-    public CopyDTO.CopyDispo getDisponibilitybycode(String code) {
+    /*
+    public CopyDTO.CopyDispo getDisponibilityByCode(String code) {
         CopyDTO copies = bookServiceClient.getCopiesBycodebar(code).block();
+
+        if (copies == null) {
+            throw new BookApiException(BookApiException.ErrorType.DATA_NOT_FOUND);
+        }
         return copies.getDisponibility();
     }
+    */
 }

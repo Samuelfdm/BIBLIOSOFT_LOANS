@@ -38,6 +38,4 @@ public class StudentServiceClient {
         String url = studentServiceUrl + "/usuario/buscandoEstudiantePorId";
         System.out.println("Request URL: " + url);
     }
-
-
 }

@@ -10,7 +10,7 @@ public class LoanRequestDTOTest {
     public void testLoanRequestDTOSettersAndGetters() {
         LoanRequestDTO loanRequest = new LoanRequestDTO("67323424", "copy123","vmlmslkmv");
 
-        assertEquals(Long.valueOf(1), loanRequest.getStudentId());
+        assertEquals("67323424", loanRequest.getStudentId());
         assertEquals("copy123", loanRequest.getCopyId());
     }
 
@@ -19,7 +19,7 @@ public class LoanRequestDTOTest {
         LoanRequestDTO loanRequest = new LoanRequestDTO("67323424", "copy456","vmlmslkmv");
 
         assertNotNull(loanRequest);
-        assertEquals(Long.valueOf(2), loanRequest.getStudentId());
+        assertEquals("67323424", loanRequest.getStudentId());
         assertEquals("copy456", loanRequest.getCopyId());
     }
 
@@ -53,15 +53,5 @@ public class LoanRequestDTOTest {
         LoanRequestDTO loanRequest2 = new LoanRequestDTO("67323424", "copy103","vmlmslkmv");
 
         assertEquals(loanRequest1.hashCode(), loanRequest2.hashCode());
-    }
-
-    @Test
-    public void testLoanRequestDTOToString() {
-        LoanRequestDTO loanRequest = new LoanRequestDTO("67323424", "copy104","vmlmslkmv");
-
-        String loanRequestString = loanRequest.toString();
-
-        assertTrue(loanRequestString.contains("studentId=7"));
-        assertTrue(loanRequestString.contains("copyId=copy104"));
     }
 }

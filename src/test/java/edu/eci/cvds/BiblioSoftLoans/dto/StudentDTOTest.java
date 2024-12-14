@@ -12,7 +12,7 @@ public class StudentDTOTest {
         student.setFullName("John Doe");
 
         assertNotNull(student);
-        assertEquals(Long.valueOf(1), student.getId());
+        assertEquals("67323424", student.getId());
         assertEquals("John Doe", student.getFullName());
     }
 
@@ -34,7 +34,7 @@ public class StudentDTOTest {
         student.setFullName(null);
 
         assertNotNull(student);
-        assertEquals(Long.valueOf(2), student.getId());
+        assertEquals("67323424", student.getId());
         assertNull(student.getFullName());
     }
 
@@ -45,7 +45,7 @@ public class StudentDTOTest {
         student.setFullName("");
 
         assertNotNull(student);
-        assertEquals(Long.valueOf(3), student.getId());
+        assertEquals("67323424", student.getId());
         assertEquals("", student.getFullName());
     }
 
@@ -56,7 +56,7 @@ public class StudentDTOTest {
         student.setFullName("Alice Cooper");
 
         assertNotNull(student);
-        assertEquals(Long.valueOf(4), student.getId());
+        assertEquals("67323424", student.getId());
         assertEquals("Alice Cooper", student.getFullName());
     }
 

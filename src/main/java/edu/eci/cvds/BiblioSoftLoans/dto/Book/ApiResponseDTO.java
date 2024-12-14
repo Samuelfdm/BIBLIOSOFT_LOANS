@@ -19,4 +19,3 @@ public class ApiResponseDTO<T> {
     @JsonProperty("body")
     private List<T> body;
 }
-

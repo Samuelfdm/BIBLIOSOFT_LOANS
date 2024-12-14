@@ -6,11 +6,13 @@ import edu.eci.cvds.BiblioSoftLoans.model.LoanHistory;
 import edu.eci.cvds.BiblioSoftLoans.model.LoanState;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Data
+@NoArgsConstructor
 public class LoanResponseDTO {
     private Long loanId;
     private String copyId;
