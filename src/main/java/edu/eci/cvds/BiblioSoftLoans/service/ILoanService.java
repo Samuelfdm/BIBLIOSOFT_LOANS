@@ -17,9 +17,6 @@ public interface ILoanService {
 
     List<Loan> getLoans(String state);
 
-    List<Loan> getLoansStudent(Long studentId);
-
-
     List<Loan> getLoansStudent(String studentId);
 
     List<Loan> getLoansStudent(String studentId, String state);

@@ -7,8 +7,8 @@ import edu.eci.cvds.BiblioSoftLoans.dto.*;
 import edu.eci.cvds.BiblioSoftLoans.dto.Book.BookDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Book.CopyDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanBookDTO;
-import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanDTO;
-import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudient;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.History.HistoryLoanDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Loans.HistoryLoanStudentDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanRequestDTO;
 import edu.eci.cvds.BiblioSoftLoans.dto.Loans.Loan.LoanResponseDTO;
 import edu.eci.cvds.BiblioSoftLoans.exception.BookApiException;
@@ -47,14 +47,13 @@ public class LoanService implements ILoanService {
     @Transactional
     public LoanResponseDTO requestLoan(LoanRequestDTO loanRequest) {
 
-        String studientName = studentServiceClient.getStudentById(loanRequest.getStudentId(),loanRequest.getToken()).block();
+        String studentName = studentServiceClient.getStudentById(loanRequest.getStudentId(),loanRequest.getToken()).block();
         String studentId = loanRequest.getStudentId();
         CopyDTO copy = bookServiceClient.getBookCopyById(loanRequest.getCopyId()).block();
 
         if (copy == null || checkStudentHasBook(studentId, copy.getBook())) {
             throw new BookLoanException(BookLoanException.ErrorType.ALREADY_BORROWED);
         }
-
 
         if (copy.getDisponibility() != null && !CopyDTO.CopyDispo.AVAILABLE.equals(copy.getDisponibility())) {
             throw new BookLoanException(BookLoanException.ErrorType.STUDENT_ALREADY_HAS_BOOK);
@@ -65,7 +64,7 @@ public class LoanService implements ILoanService {
 
         Loan loan = new Loan(
                 studentId,
-                studientName,
+                studentName,
                 loanRequest.getCopyId(),
                 copy.getBook(),
                 title,
@@ -75,7 +74,7 @@ public class LoanService implements ILoanService {
         );
 
         bookServiceClient.updateCopy(copy.getId(), CopyDTO.CopyDispo.BORROWED , copy.getState());
-        notificationServiceClient.notificationForLoan(loan);
+        //notificationServiceClient.notificationForLoan(loan);
 
         loanRepository.save(loan);
 
@@ -103,17 +102,19 @@ public class LoanService implements ILoanService {
             throw new BookLoanException(BookLoanException.ErrorType.NO_LOAN_FOUND);
         }
 
-
         String finalCopyState = returnRequest.getFinalCopyState();
-
         LoanHistory loanHistory = updateHistory(finalCopyState,loan);
-
 
         loan.setLoanState(LoanState.Returned);
         loanRepository.save(loan);
 
         bookServiceClient.updateCopy(returnRequest.getCopyId(), CopyDTO.CopyDispo.AVAILABLE,finalCopyState);
-        return new ReturnResponseDTO(loan.getId(), loanHistory.getRecordDate(), finalCopyState);
+
+        return new ReturnResponseDTO(
+                loan.getId(),
+                loanHistory.getRecordDate(),
+                finalCopyState
+        );
     }
 
     @Override
@@ -127,22 +128,13 @@ public class LoanService implements ILoanService {
     }
 
     @Override
-    public List<Loan> getLoansStudent(Long studentId) {
-        return List.of();
-    }
-
-    public List<Loan> getLoansStudentState(String studentId, String state) {
-        return  loanRepository.findByStudentIdAndLoanState(studentId, LoanState.valueOf(state));
-    }
-
-    @Override
     public List<Loan> getLoansStudent(String studentId) {
         return loanRepository.findByStudentId(studentId);
     }
 
     @Override
     public List<Loan> getLoansStudent(String studentId, String state) {
-        return List.of();
+        return  loanRepository.findByStudentIdAndLoanState(studentId, LoanState.valueOf(state));
     }
 
     public LoanHistory updateHistory(String copyState,Loan loan){
@@ -157,8 +149,6 @@ public class LoanService implements ILoanService {
         List<Loan> loans = loanRepository.findByBookIdAndStudentIdAndLoanState(bookCode, studentId, LoanState.Loaned);
         return !loans.isEmpty();
     }
-
-
 
     public LocalDate generateReturnDate(CopyDTO copyRequest) {
         LocalDate loanDate = LocalDate.now();
@@ -179,7 +169,6 @@ public class LoanService implements ILoanService {
         } catch (IllegalArgumentException e) {
             throw new BookApiException(BookApiException.ErrorType.DATA_NOT_FOUND, e);
         }
-
         return loanDate.plusDays(daysToAdd);
     }
 
@@ -197,8 +186,7 @@ public class LoanService implements ILoanService {
         return loanRepository.findAllHistory();
     }
 
-
-    public List<HistoryLoanStudient> getHistoryStudient(String studentId){
+    public List<HistoryLoanStudentDTO> getHistoryStudient(String studentId){
         return loanRepository.findLoanHistoryByStudentId(studentId);
     }
 
@@ -217,7 +205,6 @@ public class LoanService implements ILoanService {
                 }
             }
         }
-
         return availableCopiesMessage;
     }
 
@@ -232,7 +219,6 @@ public class LoanService implements ILoanService {
                 }
             }
         }
-
         return availableCopiesMessage;
     }
 
@@ -240,14 +226,4 @@ public class LoanService implements ILoanService {
         CopyDTO copies = bookServiceClient.getCopiesBycodebar(code).block();
         return copies.getDisponibility();
     }
-
-    public List<Loan> getActiveLoan(){
-        return loanRepository.findByLoanState(LoanState.Loaned);
-    }
-
-    public List<Loan> getActiveLoanbyStudient(String studientId){
-        return loanRepository.findByStudentIdAndLoanState(studientId,LoanState.Loaned);
-    }
-
-
 }

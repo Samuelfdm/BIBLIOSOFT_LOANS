@@ -1,7 +1,7 @@
 package edu.eci.cvds.BiblioSoftLoans.model;
 
 public enum CopyState {
-    BUENO,
+    Good,
     Moderate,
     Damaged
 }

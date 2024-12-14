@@ -1,7 +1,6 @@
 package edu.eci.cvds.BiblioSoftLoans.client;
 
-import edu.eci.cvds.BiblioSoftLoans.dto.Studient.StudentDTO;
-import edu.eci.cvds.BiblioSoftLoans.dto.Studient.requestStudientDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Student.RequestStudentDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,7 +22,7 @@ public class StudentServiceClient {
     public Mono<String> getStudentById(String studentId, String token) {
         imprimi();
         System.out.println(token);
-        requestStudientDTO request = new requestStudientDTO(studentId);
+        RequestStudentDTO request = new RequestStudentDTO(studentId);
         return webClient.post()
                 .uri("/usuario/buscandoEstudiantePorId")
                 .header("Authorization", "Bearer " + token)

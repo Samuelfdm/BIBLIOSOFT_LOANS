@@ -7,14 +7,14 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class HistoryLoanStudient {
+public class HistoryLoanStudentDTO {
     private String nameBook;
     private String studentName;
     private String copyId;
     private LocalDate loanDate;
     private String loanState;
 
-    public HistoryLoanStudient(String nameBook, String studentName, String copyId, LocalDate loanDate, String loanState) {
+    public HistoryLoanStudentDTO(String nameBook, String studentName, String copyId, LocalDate loanDate, String loanState) {
         this.nameBook = nameBook;
         this.studentName = studentName;
         this.copyId = copyId;

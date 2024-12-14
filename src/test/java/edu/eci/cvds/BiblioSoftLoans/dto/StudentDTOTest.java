@@ -1,5 +1,5 @@
 package edu.eci.cvds.BiblioSoftLoans.dto;
-import edu.eci.cvds.BiblioSoftLoans.dto.Studient.StudentDTO;
+import edu.eci.cvds.BiblioSoftLoans.dto.Student.StudentDTO;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
